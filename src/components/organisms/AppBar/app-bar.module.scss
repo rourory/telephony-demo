@@ -1,0 +1,8 @@
+@import '../../../css/base';
+
+.draggable {
+  -webkit-app-region: drag;
+  width: 100%;
+  opacity: 0;
+  height: $navbar_height;
+}

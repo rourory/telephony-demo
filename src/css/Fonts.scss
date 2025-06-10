@@ -1,0 +1,40 @@
+@font-face {
+  font-family: "Climate Crisis";
+  src: url("./devextreme/fonts/ClimateCrisis/climatecrisis-regular-webfont.woff2")
+      format("woff2"),
+    url("./devextreme/fonts/ClimateCrisis/climatecrisis-regular-webfont.woff")
+      format("woff");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "MainFont";
+  src: url("./devextreme/fonts/Montserrat/Montserrat-Regular.ttf"),
+    url("./devextreme/fonts/Montserrat/Montserrat-Medium.ttf"),
+    url("./devextreme/fonts/Montserrat/Montserrat-Light.ttf"),
+    url("./devextreme/fonts/Montserrat/Montserrat-ExtraLight.ttf"),
+    url("./devextreme/fonts/Montserrat/Montserrat-ExtraBold.ttf"),
+    url("./devextreme/fonts/Montserrat/Montserrat-Bold.ttf"),
+    url("./devextreme/fonts/Montserrat/Montserrat-SemiBold.ttf"),
+    url("./devextreme/fonts/Montserrat/Montserrat-Thin.ttf"),
+    url("./devextreme/fonts/Montserrat/Montserrat-Black.ttf");
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "AdventPro";
+  src: url("./devextreme/fonts/AdventPro/AdventPro-ExtraLight.ttf"),
+    url("./devextreme/fonts/AdventPro/AdventPro-Light.ttf"),
+    url("./devextreme/fonts/AdventPro/AdventPro-Regular.ttf"),
+    url("./devextreme/fonts/AdventPro/AdventPro-Medium.ttf"),
+    url("./devextreme/fonts/AdventPro/AdventPro-Bold.ttf"),
+    url("./devextreme/fonts/AdventPro/AdventPro-ExtraBold.ttf"),
+    url("./devextreme/fonts/AdventPro/AdventPro-Black.ttf"),
+    url("./devextreme/fonts/AdventPro/AdventPro_Expanded-SemiBold.ttf"),
+    url("./devextreme/fonts/AdventPro/AdventPro_Expanded-Thin.ttf");
+  font-style: normal;
+  font-display: swap;
+}

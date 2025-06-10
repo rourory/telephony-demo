@@ -1,0 +1,11 @@
+@import '../../css/base';
+
+
+.container {
+  position: relative;
+  top: $navbar_height;
+  height: calc(100vh - $navbar_height);
+  width: 100%;
+  overflow: overlay;
+  overflow-x: hidden;
+}

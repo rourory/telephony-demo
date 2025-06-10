@@ -1,0 +1,18 @@
+* {
+  font-family: MainFont;
+  ::-webkit-scrollbar {
+    width: 10px; /* Ширина бегунка */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background-color: #4caf50; /* Цвет бегунка */
+    border-radius: 4px; /* Округление бегунка */
+    border: none; /* Оформление границ бегунка */
+  }
+}
+
+html,
+body {
+  min-width: 1000px;
+  min-height: 750px;
+}

@@ -1,0 +1,18 @@
+$height: 150px;
+
+.avatar {
+  &__button_container {
+    scale: 0.9;
+    position: absolute;
+    margin-bottom: 5px;
+    display: 'flex';
+    column-gap: '15px';
+    background-color: rgba(83, 83, 83, 0.4);
+    border-radius: 50px;
+    opacity: 0.6;
+    transition: all 400ms;
+    &:hover {
+      opacity: 1;
+    }
+  }
+}

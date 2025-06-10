@@ -1,0 +1,33 @@
+@import "../../css/base";
+
+.container {
+  position: relative;
+  display: flex;
+  min-width: 300px;
+  grid-template-columns: 2fr 1fr;
+  justify-content: center;
+  top: 48px;
+  height: calc(100vh - 50px);
+}
+
+.form_holder {
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.demo {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  z-index: 10000;
+  user-select: none;
+  font-size: 120px;
+  font-weight: bold;
+  color: #77777752;
+  pointer-events: none;
+  width: 100vw;
+}
