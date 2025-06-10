@@ -1,0 +1,35 @@
+{
+  "files": {
+    "main.css": "/telephony-demo/static/css/main.2549b767.css",
+    "main.js": "/telephony-demo/static/js/main.1e5d2826.js",
+    "static/js/453.7a6d0855.chunk.js": "/telephony-demo/static/js/453.7a6d0855.chunk.js",
+    "static/media/Montserrat-SemiBold.ttf": "/telephony-demo/static/media/Montserrat-SemiBold.d5e0cc788cba9ced1fb9.ttf",
+    "static/media/Montserrat-ExtraBold.ttf": "/telephony-demo/static/media/Montserrat-ExtraBold.3a9ee100617f45a96d92.ttf",
+    "static/media/Montserrat-Medium.ttf": "/telephony-demo/static/media/Montserrat-Medium.c86e3b9010ff63c99166.ttf",
+    "static/media/Montserrat-Bold.ttf": "/telephony-demo/static/media/Montserrat-Bold.2c155811b35513d5beaa.ttf",
+    "static/media/Montserrat-Light.ttf": "/telephony-demo/static/media/Montserrat-Light.6fcc9263a21be961d246.ttf",
+    "static/media/Montserrat-Regular.ttf": "/telephony-demo/static/media/Montserrat-Regular.ceb11275ab638627a643.ttf",
+    "static/media/Montserrat-Black.ttf": "/telephony-demo/static/media/Montserrat-Black.08437fd0aa82576d3678.ttf",
+    "static/media/Montserrat-ExtraLight.ttf": "/telephony-demo/static/media/Montserrat-ExtraLight.ef3c777f702c89a0f300.ttf",
+    "static/media/Montserrat-Thin.ttf": "/telephony-demo/static/media/Montserrat-Thin.413b6b9f23ece3b343a7.ttf",
+    "static/media/AdventPro_Expanded-Thin.ttf": "/telephony-demo/static/media/AdventPro_Expanded-Thin.9e85993ad2b5520cfc72.ttf",
+    "static/media/AdventPro-ExtraLight.ttf": "/telephony-demo/static/media/AdventPro-ExtraLight.0725c60bf78cbfdfd8b6.ttf",
+    "static/media/AdventPro_Expanded-SemiBold.ttf": "/telephony-demo/static/media/AdventPro_Expanded-SemiBold.65501404b356296cfca7.ttf",
+    "static/media/AdventPro-Light.ttf": "/telephony-demo/static/media/AdventPro-Light.3ddf11c584a6fee2a021.ttf",
+    "static/media/AdventPro-Medium.ttf": "/telephony-demo/static/media/AdventPro-Medium.1e92fe8c57c7937685e4.ttf",
+    "static/media/AdventPro-Regular.ttf": "/telephony-demo/static/media/AdventPro-Regular.221a62acc11f225fe20e.ttf",
+    "static/media/AdventPro-ExtraBold.ttf": "/telephony-demo/static/media/AdventPro-ExtraBold.d56e9e65740137226550.ttf",
+    "static/media/AdventPro-Bold.ttf": "/telephony-demo/static/media/AdventPro-Bold.c0efab7900de15b1d8e1.ttf",
+    "static/media/AdventPro-Black.ttf": "/telephony-demo/static/media/AdventPro-Black.10a708e95c2a5c0979f0.ttf",
+    "static/media/climatecrisis-regular-webfont.woff": "/telephony-demo/static/media/climatecrisis-regular-webfont.73bac8eec690ffc32b7c.woff",
+    "static/media/climatecrisis-regular-webfont.woff2": "/telephony-demo/static/media/climatecrisis-regular-webfont.adc62cc61abe221457f3.woff2",
+    "index.html": "/telephony-demo/index.html",
+    "main.2549b767.css.map": "/telephony-demo/static/css/main.2549b767.css.map",
+    "main.1e5d2826.js.map": "/telephony-demo/static/js/main.1e5d2826.js.map",
+    "453.7a6d0855.chunk.js.map": "/telephony-demo/static/js/453.7a6d0855.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.2549b767.css",
+    "static/js/main.1e5d2826.js"
+  ]
+}
