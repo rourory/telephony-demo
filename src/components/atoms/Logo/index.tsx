@@ -20,9 +20,9 @@ const AppLogo: React.FC<AppLogoVariant> = memo(
     iconWidth = 32,
   }) => {
     return (
-      <>
+      <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
         <Avatar
-          src={"icons/logo.svg"}
+          src={`${process.env.PUBLIC_URL}/icons/logo.svg`}
           sx={{
             marginRight: mr,
             userDrag: "none",
@@ -45,7 +45,7 @@ const AppLogo: React.FC<AppLogoVariant> = memo(
         >
           Телефония
         </Typography>
-      </>
+      </div>
     );
   }
 );

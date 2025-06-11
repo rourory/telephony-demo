@@ -1,7 +1,3 @@
-import "./css/Fonts.scss";
-import "./css/App.scss";
-import "./css/devextreme/dx.material.blue.dark.css";
-
 import React from "react";
 import { useSelector } from "react-redux";
 import { applicationThemeSelector } from "./redux/slices/theme-slice/theme-slice";
@@ -12,7 +8,7 @@ import { loadMessages, locale } from "devextreme/localization";
 import { SnackbarKey, SnackbarProvider, closeSnackbar } from "notistack";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { HashRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, HashRouter, Route, Routes } from "react-router-dom";
 import NotificationEnqueuer from "./components/organisms/NotificationEnqueuer";
 import CloseApplicationDialog from "./components/organisms/CloseApplicationDialog";
 import MainLayout from "./layouts/MainLayout";
@@ -77,7 +73,7 @@ function App() {
       }}
     >
       <ThemeProvider theme={theme}>
-        <HashRouter>
+        <BrowserRouter basename={process.env.PUBLIC_URL}>
           <Routes>
             {user ? (
               <Route path="/" element={<MainLayout />}>
@@ -104,7 +100,7 @@ function App() {
               <Route path="/*" element={<SignInPage />}></Route>
             )}
           </Routes>
-        </HashRouter>
+        </BrowserRouter>
         <NotificationEnqueuer />
         <CloseApplicationDialog />
       </ThemeProvider>

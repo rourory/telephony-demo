@@ -47,7 +47,7 @@ const AdministrationAutocompleteField: React.FC<{
 
   const isOptionEqualToValue = React.useCallback(
     (option: AdministrationEntity, value: AdministrationEntity) =>
-      option.id == value.id,
+      option.id === value.id,
     []
   );
 
@@ -63,8 +63,8 @@ const AdministrationAutocompleteField: React.FC<{
     ) => {
       return (
         <Box
-          id={`${option.id} ${option.username}`}
-          key={`${option.id} ${option.username}`}
+          id={`${option.id}-option-id`}
+          key={`${option.id}-option-key`}
           component="li"
           sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
           {...props}
@@ -80,13 +80,13 @@ const AdministrationAutocompleteField: React.FC<{
     (params: AutocompleteRenderInputParams) => (
       <TextField
         {...params}
-        id={`${params.id}`}
-        key={`${params.id}`}
+        id={`${params.id}-input-id`}
+        // key={`${params.id}-input-key`}
         label={<StyledParagragp text={"Имя пользователя"} fontWeight={600} />}
         InputProps={{
           ...params.InputProps,
           endAdornment: (
-            <React.Fragment>
+            <React.Fragment key={`${params.id}-endAdornment-key`}>
               {fetchingStatus === "LOADING" ? (
                 <UltraLightLoadingIndicator />
               ) : null}

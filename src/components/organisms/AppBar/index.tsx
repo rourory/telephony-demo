@@ -64,7 +64,7 @@ const ApplicationBar: React.FC<Props> = memo(
       <AppBar
         position="fixed"
         open={open}
-        sx={{ paddingRight: 0, zIndex: 1000 }}
+        sx={{ paddingRight: 0, zIndex: 10000}}
       >
         <Toolbar variant="dense">
           {withDrawer && (

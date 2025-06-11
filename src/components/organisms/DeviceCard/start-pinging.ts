@@ -17,7 +17,6 @@ const startPinging: StartPingingFunctionType = (
   callback
 ) => {
   const interval = setInterval(() => {
-    console.log(`pinging ${ipAddress}`);
     // window.electron.ipcRenderer.sendMessage(`remote.ping`, ipAddress);
   }, intervalMS);
   // const unsubscribe = window.electron.ipcRenderer.on(

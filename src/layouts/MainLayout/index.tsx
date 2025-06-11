@@ -11,6 +11,7 @@ import { appSettingsStateSelector } from "../../redux/slices/app-settings-slice/
 import { loadContactTypeValuesThunk } from "../../redux/slices/devices-slice/subthunks/load-contact-type-values-thunk";
 import { loadMarkedWordsThunk } from "../../redux/slices/devices-slice/subthunks/load-marked-words";
 import { loadRelationTypeValuesThunk } from "../../redux/slices/devices-slice/subthunks/load-relation-type-values-thunk";
+import { CssBaseline } from "@mui/material";
 const MainLayout: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const backendSettings = useSelector(appSettingsStateSelector);
@@ -22,16 +23,17 @@ const MainLayout: React.FC = () => {
   }, [backendSettings]);
 
   return (
-    <Box sx={{ display: "flex" }} className={styles.layout}>
+    <Box sx={{ display: "flex" }}>
+      <CssBaseline />
       <ApplicationBar withDrawer />
       <ApplicationDrawer />
+      <div className={styles.demo}>WEB-DEMO</div>
       <Box
         component="main"
         sx={{
           height: "100vh",
           width: "100%",
-          overflow: "hidden", 
-          minWidth: "1000px",
+          overflow: "hidden",
         }}
       >
         <div className={styles.container}>
