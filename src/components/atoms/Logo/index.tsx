@@ -1,6 +1,5 @@
 import { Avatar, Typography } from "@mui/material";
 import React, { memo } from "react";
-import logo from "../../../../../assets/Logo_main.png";
 
 type AppLogoVariant = {
   variant: "h1" | "h2" | "h3" | "h4" | "h5" | "h6";

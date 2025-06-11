@@ -1,5 +1,6 @@
 import "./css/Fonts.scss";
 import "./css/App.scss";
+import "./css/devextreme/dx.material.blue.dark.css";
 
 import React from "react";
 import { useSelector } from "react-redux";

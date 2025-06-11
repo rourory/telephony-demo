@@ -25,9 +25,7 @@ const AdministrationAutocompleteField: React.FC<{
   ) => void;
 }> = ({ onChange }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { backendAddress, backendProtocol, backendPort } = useSelector(
-    appSettingsStateSelector
-  );
+  const backendSettings = useSelector(appSettingsStateSelector);
 
   const {
     usersForAutocompleteField,
@@ -38,15 +36,9 @@ const AdministrationAutocompleteField: React.FC<{
   const onOpen = React.useCallback(() => {
     localStorage.removeItem(APP_TOKEN_KEY);
     localStorage.removeItem(APP_TOKEN_ISSUED_KEY);
-    dispatch(
-      loadNotArchivedAdministrationDataThunk({
-        backendAddress: backendAddress,
-        backendPort: backendPort,
-        backendProtocol: backendProtocol,
-      })
-    );
+    dispatch(loadNotArchivedAdministrationDataThunk(backendSettings));
     dispatch(setUserAutocompleteFieldOpen(true));
-  }, [backendAddress, backendProtocol, backendPort]);
+  }, [backendSettings]);
 
   const onClose = React.useCallback(() => {
     dispatch(setUserAutocompleteFieldOpen(false));
@@ -71,16 +63,13 @@ const AdministrationAutocompleteField: React.FC<{
     ) => {
       return (
         <Box
-          id={`${option.id}`}
-          key={`${option.id}`}
+          id={`${option.id} ${option.username}`}
+          key={`${option.id} ${option.username}`}
           component="li"
           sx={{ "& > img": { mr: 2, flexShrink: 0 } }}
           {...props}
         >
-          <StyledParagragp
-            text={`${option.username} (${option.squadNumber} отр.)`}
-            fontWeight={600}
-          />
+          <StyledParagragp text={`${option.username}`} fontWeight={600} />
         </Box>
       );
     },
@@ -98,7 +87,7 @@ const AdministrationAutocompleteField: React.FC<{
           ...params.InputProps,
           endAdornment: (
             <React.Fragment>
-              {fetchingStatus == "LOADING" ? (
+              {fetchingStatus === "LOADING" ? (
                 <UltraLightLoadingIndicator />
               ) : null}
               {params.InputProps.endAdornment}
@@ -119,7 +108,7 @@ const AdministrationAutocompleteField: React.FC<{
       fullWidth
       onOpen={onOpen}
       onClose={onClose}
-      loading={fetchingStatus == "LOADING"}
+      loading={fetchingStatus === "LOADING"}
       isOptionEqualToValue={isOptionEqualToValue}
       value={autocompleteFieldUser}
       onChange={onChange}

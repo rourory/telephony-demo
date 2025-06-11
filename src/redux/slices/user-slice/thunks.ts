@@ -28,6 +28,8 @@ export const signIn = createAsyncThunk<
   await signInQuery(backendSettings, credentials)
     .then((res) => {
       status = res.status;
+      console.log(res);
+
       if (status === 403) {
         const forbiddenMessage = "Доступ запрещен";
         thunkApi.dispatch(
@@ -168,7 +170,7 @@ export const loadPermissions = createAsyncThunk<
   await fetchAllQuery<UiPermissionEntity>(
     backendSettings,
     PERMISSIONS,
-    `?filter=["roleId","=",${roleId}]`
+    `?roleId=${roleId}`
   )
     .then((res) => (permissionsData = res.data))
     .catch((err) =>

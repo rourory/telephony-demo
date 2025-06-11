@@ -34,13 +34,13 @@ export const establishSpeechRecievingServiceConnection = createAsyncThunk<
           serviceName: DeviceServiceEnum.SRVC_SPEECH_RECEIVING,
         }),
       );
-      window.electron.ipcRenderer.removeAllListeners(
-        `audio.recording.${connection.ipAddress}`,
-      );
-      window.electron.ipcRenderer.on(
-        `audio.recording.${connection.ipAddress}`,
-        (args: Buffer) => connection.socket?.send(args.buffer),
-      );
+      // window.electron.ipcRenderer.removeAllListeners(
+      //   `audio.recording.${connection.ipAddress}`,
+      // );
+      // window.electron.ipcRenderer.on(
+      //   `audio.recording.${connection.ipAddress}`,
+      //   (args: Buffer) => connection.socket?.send(args.buffer),
+      // );
     };
     connection.socket.onclose = () => {
       thunkApi.dispatch(

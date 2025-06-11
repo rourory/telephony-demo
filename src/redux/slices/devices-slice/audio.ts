@@ -73,15 +73,15 @@ export const restoreSpeechStartTime = () => {
 
 // Microphone recording
 export const recMic = (ipAddress: string) => {
-  window.electron.ipcRenderer.sendMessage('audio.recording', {
-    ipAddress: ipAddress,
-    rec: true,
-  });
+  // window.electron.ipcRenderer.sendMessage('audio.recording', {
+  //   ipAddress: ipAddress,
+  //   rec: true,
+  // });
 };
 
 export const stopRec = (ipAddress: string) => {
-  window.electron.ipcRenderer.sendMessage('audio.recording', {
-    ipAddress: ipAddress,
-    rec: false,
-  });
+  // window.electron.ipcRenderer.sendMessage('audio.recording', {
+  //   ipAddress: ipAddress,
+  //   rec: false,
+  // });
 };

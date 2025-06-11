@@ -30,7 +30,7 @@ const MainLayout: React.FC = () => {
         sx={{
           height: "100vh",
           width: "100%",
-          overflow: "hidden",
+          overflow: "hidden", 
           minWidth: "1000px",
         }}
       >

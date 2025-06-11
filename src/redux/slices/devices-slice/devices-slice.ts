@@ -719,10 +719,10 @@ const devicesSlice = createSlice({
           targetPort: 5900,
         });
       });
-      window.electron.ipcRenderer.sendMessage(
-        'devices.create.retranslation.server',
-        devicesForRetranslationServers,
-      );
+      // window.electron.ipcRenderer.sendMessage(
+      //   'devices.create.retranslation.server',
+      //   devicesForRetranslationServers,
+      // );
       state.fetching = 'SUCCESS';
       state.devices = action.payload;
     });

@@ -197,10 +197,10 @@ const CallsDataGrid: React.FC<CallsDataGridComponentType> = memo(
     const onCellClick = React.useCallback(
       (e: CellDblClickEvent<CallEntity, number>) => {
         if (e.column.dataField == 'play') {
-          window.electron.ipcRenderer.sendMessage(
-            'open.video',
-            e.data.videoPath,
-          );
+          // window.electron.ipcRenderer.sendMessage(
+          //   'open.video',
+          //   e.data.videoPath,
+          // );
         }
       },
       [],

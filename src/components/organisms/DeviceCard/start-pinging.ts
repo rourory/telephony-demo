@@ -17,17 +17,18 @@ const startPinging: StartPingingFunctionType = (
   callback
 ) => {
   const interval = setInterval(() => {
-    window.electron.ipcRenderer.sendMessage(`remote.ping`, ipAddress);
+    console.log(`pinging ${ipAddress}`);
+    // window.electron.ipcRenderer.sendMessage(`remote.ping`, ipAddress);
   }, intervalMS);
-  const unsubscribe = window.electron.ipcRenderer.on(
-    `remote.ping.${ipAddress}`,
-    (alive: any) => {
-      callback(alive);
-    }
-  );
-  window.electron.ipcRenderer.sendMessage(`remote.ping`, ipAddress);
+  // const unsubscribe = window.electron.ipcRenderer.on(
+  //   `remote.ping.${ipAddress}`,
+  //   (alive: any) => {
+  //     callback(alive);
+  //   }
+  // );
+  // window.electron.ipcRenderer.sendMessage(`remote.ping`, ipAddress);
   return () => {
-    unsubscribe();
+    // unsubscribe();
     clearInterval(interval);
   };
 };

@@ -40,14 +40,12 @@ const ApplicationBar: React.FC<Props> = memo(
       dispatch(setDirection(direction === "rtl" ? "ltr" : "rtl"));
     }, [open, direction]);
 
-    const hideButtonClicked = useCallback(
-      () => window.electron.ipcRenderer.sendMessage("window.hide"),
-      []
-    );
-    const fullScreenButtonClicked = useCallback(
-      () => window.electron.ipcRenderer.sendMessage("window.maximize"),
-      []
-    );
+    const hideButtonClicked = useCallback(() => {
+      // window.electron.ipcRenderer.sendMessage("window.hide");
+    }, []);
+    const fullScreenButtonClicked = useCallback(() => {
+      // window.electron.ipcRenderer.sendMessage("window.maximize");
+    }, []);
 
     const closeButtonClicked = useCallback(
       () => dispatch(setCloseDialogState(true)),
