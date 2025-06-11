@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/telephony-demo/static/css/main.82be595e.css",
-    "main.js": "/telephony-demo/static/js/main.0bfc3ce8.js",
+    "main.js": "/telephony-demo/static/js/main.0d72ca8a.js",
     "static/js/453.7a6d0855.chunk.js": "/telephony-demo/static/js/453.7a6d0855.chunk.js",
     "static/media/Montserrat-SemiBold.ttf": "/telephony-demo/static/media/Montserrat-SemiBold.d5e0cc788cba9ced1fb9.ttf",
     "static/media/Montserrat-ExtraBold.ttf": "/telephony-demo/static/media/Montserrat-ExtraBold.3a9ee100617f45a96d92.ttf",
@@ -40,11 +40,11 @@
     "static/media/dxiconsmaterial.woff2": "/telephony-demo/static/media/dxiconsmaterial.b48a0c9dc7dd0bcd2a8c.woff2",
     "index.html": "/telephony-demo/index.html",
     "main.82be595e.css.map": "/telephony-demo/static/css/main.82be595e.css.map",
-    "main.0bfc3ce8.js.map": "/telephony-demo/static/js/main.0bfc3ce8.js.map",
+    "main.0d72ca8a.js.map": "/telephony-demo/static/js/main.0d72ca8a.js.map",
     "453.7a6d0855.chunk.js.map": "/telephony-demo/static/js/453.7a6d0855.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.82be595e.css",
-    "static/js/main.0bfc3ce8.js"
+    "static/js/main.0d72ca8a.js"
   ]
 }
