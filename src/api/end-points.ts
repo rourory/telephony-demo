@@ -1,5 +1,5 @@
-// const BASE = "/api/v1";
-const BASE = "/api";
+const BASE = "/api/v1";
+// const BASE = "/api";
 const AUDITION = `${BASE}/audition`;
 
 export const CONVICTED = `${BASE}/convicted`;
@@ -34,4 +34,3 @@ export const STATISTICS = `${BASE}/statistics`;
 export const STATISTICS_TOP_CONVICTED = `${STATISTICS}/top_convicted`;
 export const STATISTICS_TOP_ADMINISTRATION = `${STATISTICS}/top_administration`;
 export const STATISTICS_TOP_COMMON_INFO = `${STATISTICS}/common_info`;
-
