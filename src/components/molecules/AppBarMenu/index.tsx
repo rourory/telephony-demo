@@ -1,31 +1,33 @@
-import { Logout, Password } from '@mui/icons-material';
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { Logout, Password } from "@mui/icons-material";
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   applicationThemeSelector,
   toggleMode,
-} from '../../../redux/slices/theme-slice/theme-slice';
-import { AppDispatch } from '../../../redux/store';
-import { useNavigate } from 'react-router-dom';
-import ColorModeSwitcher from '../../atoms/ColorModeSwitcher';
-import Box from '@mui/material/Box/Box';
-import Tooltip from '@mui/material/Tooltip/Tooltip';
-import IconButton from '@mui/material/IconButton/IconButton';
-import Avatar from '@mui/material/Avatar/Avatar';
-import Menu from '@mui/material/Menu/Menu';
-import MenuItem from '@mui/material/MenuItem/MenuItem';
-import Divider from '@mui/material/Divider/Divider';
-import ListItemIcon from '@mui/material/ListItemIcon/ListItemIcon';
-import Typography from '@mui/material/Typography/Typography';
-import StyledParagragp from '../../atoms/StyledParagraph/Index';
+} from "../../../redux/slices/theme-slice/theme-slice";
+import { AppDispatch } from "../../../redux/store";
+import { useNavigate } from "react-router-dom";
+import ColorModeSwitcher from "../../atoms/ColorModeSwitcher";
+import Box from "@mui/material/Box/Box";
+import Tooltip from "@mui/material/Tooltip/Tooltip";
+import IconButton from "@mui/material/IconButton/IconButton";
+import Avatar from "@mui/material/Avatar/Avatar";
+import Menu from "@mui/material/Menu/Menu";
+import MenuItem from "@mui/material/MenuItem/MenuItem";
+import Divider from "@mui/material/Divider/Divider";
+import ListItemIcon from "@mui/material/ListItemIcon/ListItemIcon";
+import Typography from "@mui/material/Typography/Typography";
+import StyledParagragp from "../../atoms/StyledParagraph/Index";
 import {
   removeUser,
   userSelector,
-} from '../../../redux/slices/user-slice/user-slice';
-import { APP_TOKEN_ISSUED_KEY, APP_TOKEN_KEY } from '../../../api/constants';
-import { setOpen } from '../../../redux/slices/drawer-slice/drawer-slice';
-import { setChangePasswordDialogOpenState, setChangePasswordDialogText } from '../../../redux/slices/change-password-dialog-slice/change-password-dialog-slice';
-
+} from "../../../redux/slices/user-slice/user-slice";
+import { APP_TOKEN_ISSUED_KEY, APP_TOKEN_KEY } from "../../../api/constants";
+import { setOpen } from "../../../redux/slices/drawer-slice/drawer-slice";
+import {
+  setChangePasswordDialogOpenState,
+  setChangePasswordDialogText,
+} from "../../../redux/slices/change-password-dialog-slice/change-password-dialog-slice";
 
 const AppBarMenu: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -41,7 +43,7 @@ const AppBarMenu: React.FC = () => {
     (event: React.MouseEvent<HTMLElement>) => {
       setAnchorEl(event.currentTarget);
     },
-    [],
+    []
   );
 
   const handleClose = React.useCallback(() => {
@@ -50,10 +52,10 @@ const AppBarMenu: React.FC = () => {
 
   const changePassword = React.useCallback(() => {
     handleClose();
-    dispatch(
-      setChangePasswordDialogText('Пожалуйста, установите новый пароль.'),
-    );
-    dispatch(setChangePasswordDialogOpenState(true));
+    // dispatch(
+    //   setChangePasswordDialogText("Пожалуйста, установите новый пароль.")
+    // );
+    // dispatch(setChangePasswordDialogOpenState(true));
   }, []);
 
   const logout = React.useCallback(() => {
@@ -62,38 +64,38 @@ const AppBarMenu: React.FC = () => {
     localStorage.removeItem(APP_TOKEN_ISSUED_KEY);
     dispatch(removeUser());
     dispatch(setOpen(false));
-    navigate('/');
+    navigate("/");
   }, [handleClose]);
 
   return (
     <>
       <Box
         sx={{
-          display: 'flex',
-          flexGrow: '1',
-          alignItems: 'center',
-          textAlign: 'center',
-          width: '100%',
-          justifyContent: 'start',
+          display: "flex",
+          flexGrow: "1",
+          alignItems: "center",
+          textAlign: "center",
+          width: "100%",
+          justifyContent: "start",
         }}
       >
         <Tooltip
           title={
-            <StyledParagragp text={'Настройки аккаунта'} fontSize="15px" />
+            <StyledParagragp text={"Настройки аккаунта"} fontSize="15px" />
           }
           placement="right"
         >
           <IconButton
             onClick={handleClick}
             size="medium"
-            sx={{ ml: '4px' }}
-            aria-controls={open ? 'account-menu' : undefined}
+            sx={{ ml: "4px" }}
+            aria-controls={open ? "account-menu" : undefined}
             aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
+            aria-expanded={open ? "true" : undefined}
           >
             <Avatar sx={{ width: 40, height: 40 }}>
               <StyledParagragp
-                text={`${user?.squadNumber || '*'}`}
+                text={`${user?.squadNumber || "*"}`}
                 fontSize="25px"
                 fontWeight={600}
               />
@@ -109,10 +111,10 @@ const AppBarMenu: React.FC = () => {
         PaperProps={{
           elevation: 0,
           sx: {
-            overflow: 'visible',
-            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+            overflow: "visible",
+            filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
             mt: 1.5,
-            '& .MuiAvatar-root': {
+            "& .MuiAvatar-root": {
               width: 32,
               height: 32,
               ml: -0.5,
@@ -120,15 +122,15 @@ const AppBarMenu: React.FC = () => {
             },
           },
         }}
-        transformOrigin={{ horizontal: 'left', vertical: 'bottom' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        transformOrigin={{ horizontal: "left", vertical: "bottom" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
         <MenuItem>
           <div
-            style={{ display: 'flex', justifyContent: 'center', width: '100%' }}
+            style={{ display: "flex", justifyContent: "center", width: "100%" }}
           >
             <StyledParagragp
-              text={user?.username || 'Неизвестный пользователь'}
+              text={user?.username || "Неизвестный пользователь"}
               fontWeight={900}
               fontSize="28px"
             />
@@ -139,25 +141,25 @@ const AppBarMenu: React.FC = () => {
           <ListItemIcon>
             <Password fontSize="small" />
           </ListItemIcon>
-          <StyledParagragp text={'Изменить пароль'} />
+          <StyledParagragp text={"Изменить пароль"} />
         </MenuItem>
         <MenuItem onClick={logout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
-          <StyledParagragp text={'Выйти'} />
+          <StyledParagragp text={"Выйти"} />
         </MenuItem>
         <Divider />
         <MenuItem>
           <ColorModeSwitcher
-            checked={theme.palette.mode === 'dark' ? true : false}
+            checked={theme.palette.mode === "dark" ? true : false}
             onChange={() => {
               dispatch(toggleMode());
             }}
             aria-label="login switch"
           />
-          <Typography sx={{ marginRight: '15px' }}>
-            <StyledParagragp text={'Изменить цветовую схему'} fontSize="16px" />
+          <Typography sx={{ marginRight: "15px" }}>
+            <StyledParagragp text={"Изменить цветовую схему"} fontSize="16px" />
           </Typography>
         </MenuItem>
       </Menu>

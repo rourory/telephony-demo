@@ -36,7 +36,7 @@ const MainLayout: React.FC = () => {
         }}
       >
         <div className={styles.container}>
-          <ChangePasswordDialog />
+          {/* <ChangePasswordDialog /> */}
           <Outlet />
         </div>
       </Box>
