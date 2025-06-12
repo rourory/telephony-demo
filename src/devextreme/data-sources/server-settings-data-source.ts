@@ -1,23 +1,23 @@
-import CustomStore from 'devextreme/data/custom_store';
-import { isNotEmpty, updateValuesOfEntityDataTypeObject } from '../util';
+import CustomStore from "devextreme/data/custom_store";
+import { isNotEmpty, updateValuesOfEntityDataTypeObject } from "../util";
 import {
   deleteQuery,
   fetchAllQuery,
   fetchOneQuery,
   insertQuery,
   updateQuery,
-} from '../../api/queries';
-import { SETTINGS } from '../../api/end-points';
+} from "../../api/queries";
+import { SETTINGS } from "../../api/end-points";
 
 const permittedCallDurationsDataSource = (
-  backendSettings: BackendSettings,
+  backendSettings: BackendSettings
 ) => ({
   store: new CustomStore({
-    key: 'id',
+    key: "id",
 
     load: async (loadOptions: any) => {
-      let params = '?';
-      ['sort'].forEach(function (i) {
+      let params = "?";
+      ["sort"].forEach(function (i) {
         if (i in loadOptions && isNotEmpty(loadOptions[i])) {
           params += `${i}=${JSON.stringify(loadOptions[i])}&`;
         }
@@ -26,9 +26,10 @@ const permittedCallDurationsDataSource = (
       return fetchAllQuery<ServerSettingsEntity>(
         backendSettings,
         SETTINGS,
-        params,
+        params
       )
         .then((response) => {
+          console.log(response.data);
           return {
             data: response.data,
             totalCount: response.totalCount,
@@ -45,7 +46,7 @@ const permittedCallDurationsDataSource = (
       return await fetchOneQuery<ServerSettingsEntity>(
         backendSettings,
         SETTINGS,
-        key,
+        key
       ).catch((err) => {
         throw err;
       });
@@ -61,7 +62,7 @@ const permittedCallDurationsDataSource = (
       return await insertQuery<ServerSettingsEntity>(
         backendSettings,
         SETTINGS,
-        values,
+        values
       )
         .then((res) => {
           if (res.status === 203) {
@@ -85,7 +86,7 @@ const permittedCallDurationsDataSource = (
           await updateQuery<ServerSettingsEntity>(
             backendSettings,
             SETTINGS,
-            returnedData,
+            returnedData
           )
             .then((res) => {
               if (res.status === 203) {
@@ -102,7 +103,7 @@ const permittedCallDurationsDataSource = (
         });
     },
   }),
-  sort: 'id',
+  sort: "id",
 });
 
 export default permittedCallDurationsDataSource;

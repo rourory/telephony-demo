@@ -170,7 +170,7 @@ export const loadPermissions = createAsyncThunk<
   await fetchAllQuery<UiPermissionEntity>(
     backendSettings,
     PERMISSIONS,
-    `?roleId=${roleId}`
+    `?filter=["roleId", "=", ${roleId}]`
   )
     .then((res) => (permissionsData = res.data))
     .catch((err) =>

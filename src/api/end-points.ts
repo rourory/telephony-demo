@@ -25,6 +25,7 @@ export const MARKED_WORDS = `${BASE}/marked_words`;
 export const CONVICTED_AUD = `${AUDITION}/convicted`;
 export const RELATIVES_AUD = `${AUDITION}/relatives`;
 export const CONTACTS_AUD = `${AUDITION}/contacts`;
+export const REVISIONS = `${AUDITION}/revisions`;
 
 export const ENVERS_ACTIONS = `${BASE}/envers_actions`;
 

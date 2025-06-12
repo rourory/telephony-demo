@@ -89,7 +89,7 @@ const SignInPage: React.FC = () => {
       <ApplicationBar />
       <div className={styles.container}>
         <div className={styles.demo}>WEB-DEMO</div>
-        <LoadingCurtain show={userFetchStatus == "LOADING"} />
+        <LoadingCurtain show={userFetchStatus === "LOADING"} />
         <div className={styles.form_holder}>
           <Box
             sx={{
@@ -105,8 +105,6 @@ const SignInPage: React.FC = () => {
             <CssBaseline />
             <AppLogo
               variant={"h4"}
-              mb="30px"
-              mr=""
               modal={true}
               iconHeight={64}
               iconWidth={64}
@@ -148,9 +146,9 @@ const SignInPage: React.FC = () => {
               <LoadingButton
                 loadingIndicator={<UltraLightLoadingIndicator />}
                 loading={userFetchStatus == "LOADING"}
-                color={userFetchStatus == "ERROR" ? "error" : "info"}
+                color={userFetchStatus === "ERROR" ? "error" : "info"}
                 disabled={
-                  credentials.username == "" || credentials.password == ""
+                  credentials.username === "" || credentials.password === ""
                 }
                 type="submit"
                 fullWidth

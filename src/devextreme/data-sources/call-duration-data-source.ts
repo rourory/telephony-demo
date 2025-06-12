@@ -31,6 +31,7 @@ const permittedCallDurationsDataSource = (
         .then((response) => {
           return {
             data: response.data.map((item) => {
+              console.log(item)
               return { ...item, text: item.duration, value: item.id };
             }),
             totalCount: response.totalCount,

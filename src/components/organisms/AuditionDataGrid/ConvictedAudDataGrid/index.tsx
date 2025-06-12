@@ -1,13 +1,13 @@
-import React from 'react';
+import React from "react";
 import dxDataGrid, {
   DataErrorOccurredInfo,
   ExportingEvent,
-} from 'devextreme/ui/data_grid';
-import { Workbook } from 'exceljs';
-import { saveAs } from 'file-saver-es';
-import { exportDataGrid } from 'devextreme/excel_exporter';
-import { useDispatch, useSelector } from 'react-redux';
-import { DataGrid } from 'devextreme-react';
+} from "devextreme/ui/data_grid";
+import { Workbook } from "exceljs";
+import { saveAs } from "file-saver-es";
+import { exportDataGrid } from "devextreme/excel_exporter";
+import { useDispatch, useSelector } from "react-redux";
+import { DataGrid } from "devextreme-react";
 import {
   Editing,
   FilterRow,
@@ -22,20 +22,29 @@ import {
   Lookup,
   ColumnFixing,
   HeaderFilter,
-} from 'devextreme-react/data-grid';
-import { EventInfo } from 'devextreme/events';
-import convictedAudDataSource from '../../../../devextreme/data-sources/audition/convicted-aud-data-source';
-import enversActionsDataSource from '../../../../devextreme/data-sources/audition/envers-actions-data-sourse';
-import { headerFilterTexts, fiterRowOperationDescriptions, pagerInfoText, allowedPageSizes, dateNumberFilterOperations, stringFilterOperations } from '../../../../devextreme/devextreme-settings';
-import { appSettingsStateSelector } from '../../../../redux/slices/app-settings-slice/app-settings-slice';
-import { addNotification } from '../../../../redux/slices/notify-slice/notify-slice';
-import { AppDispatch } from '../../../../redux/store';
-import { dataGridRussianTexts } from '../../../../utils/data-grid-russian-texts';
+} from "devextreme-react/data-grid";
+import { EventInfo } from "devextreme/events";
+import convictedAudDataSource from "../../../../devextreme/data-sources/audition/convicted-aud-data-source";
+import enversActionsDataSource from "../../../../devextreme/data-sources/audition/envers-actions-data-sourse";
+import {
+  headerFilterTexts,
+  fiterRowOperationDescriptions,
+  pagerInfoText,
+  allowedPageSizes,
+  dateNumberFilterOperations,
+  stringFilterOperations,
+} from "../../../../devextreme/devextreme-settings";
+import { appSettingsStateSelector } from "../../../../redux/slices/app-settings-slice/app-settings-slice";
+import { addNotification } from "../../../../redux/slices/notify-slice/notify-slice";
+import { AppDispatch } from "../../../../redux/store";
+import { dataGridRussianTexts } from "../../../../utils/data-grid-russian-texts";
+import administrationDataSource from "../../../../devextreme/data-sources/administration-data-source";
+import revInfoDataSource from "../../../../devextreme/data-sources/audition/rev-info-data-sourse";
 
 const onExporting = (e: ExportingEvent) => {
   const workbook = new Workbook();
   const worksheet = workbook.addWorksheet(
-    `История изменений заявлений на ${new Date().toDateString()}`,
+    `История изменений заявлений на ${new Date().toDateString()}`
   );
 
   exportDataGrid({
@@ -45,8 +54,8 @@ const onExporting = (e: ExportingEvent) => {
   }).then(() => {
     workbook.xlsx.writeBuffer().then((buffer) => {
       saveAs(
-        new Blob([buffer], { type: 'application/octet-stream' }),
-        `История изменений заявлений на ${new Date().toDateString()}.xlsx`,
+        new Blob([buffer], { type: "application/octet-stream" }),
+        `История изменений заявлений на ${new Date().toDateString()}.xlsx`
       );
     });
   });
@@ -60,32 +69,51 @@ const ConvictedAudDataGrid = () => {
 
   const dataSource = React.useMemo(
     () => convictedAudDataSource(backendSettings),
-    [backendSettings],
+    [backendSettings]
   );
 
   const eaDataSource = React.useMemo(
     () => enversActionsDataSource(backendSettings),
-    [backendSettings],
+    [backendSettings]
+  );
+
+  const revInfoDS = React.useMemo(
+    () => revInfoDataSource(backendSettings),
+    [backendSettings]
+  );
+
+  const revUsernameLookupDisplayExpression = React.useCallback(
+    (val: Revision) => {
+      return `${val.username}`;
+    },
+    []
+  );
+
+  const revTimestampLookupDisplayExpression = React.useCallback(
+    (val: Revision) => {
+      return new Date(val.revtstmp);
+    },
+    []
   );
 
   const onDataErrorOccured = React.useCallback(
     (
       e: EventInfo<dxDataGrid<ConvictedAudEntity, number>> &
-        DataErrorOccurredInfo,
+        DataErrorOccurredInfo
     ) => {
       dispatch(
         addNotification({
-          type: 'error',
-          message: e.error?.message || 'Неожиданная ошибка',
-        }),
+          type: "error",
+          message: e.error?.message || "Неожиданная ошибка",
+        })
       );
     },
-    [],
+    []
   );
 
   return (
     <DataGrid
-      style={{ position: 'relative', height: '100%' }}
+      style={{ position: "relative", height: "100%" }}
       ref={dataGrid}
       dataSource={dataSource}
       onDataErrorOccurred={onDataErrorOccured}
@@ -95,23 +123,23 @@ const ConvictedAudDataGrid = () => {
       <ColumnFixing
         enabled={true}
         texts={{
-          fix: 'Зафиксировать',
-          unfix: 'Восстановить фиксацию',
-          leftPosition: 'Слева',
-          rightPosition: 'Справа',
+          fix: "Зафиксировать",
+          unfix: "Восстановить фиксацию",
+          leftPosition: "Слева",
+          rightPosition: "Справа",
         }}
       />
       <Export
         enabled={true}
         allowExportSelectedData={true}
         texts={{
-          exportAll: 'Экспортировать все',
-          exportSelectedRows: 'Экспортировать выделенные',
+          exportAll: "Экспортировать все",
+          exportSelectedRows: "Экспортировать выделенные",
         }}
       />
       <Editing
         useIcons
-        mode={'row'}
+        mode={"row"}
         allowUpdating={false}
         allowDeleting={false}
         allowAdding={false}
@@ -121,14 +149,14 @@ const ConvictedAudDataGrid = () => {
       <RemoteOperations groupPaging filtering sorting paging />
       <FilterRow
         visible={true}
-        resetOperationText={'Сбросить фильтр'}
+        resetOperationText={"Сбросить фильтр"}
         operationDescriptions={fiterRowOperationDescriptions}
       />
-      <SearchPanel visible={true} placeholder={'Поиск...'} width={'30vw'} />
-      <Sorting mode={'multiple'} />
-      <Selection mode={'single'} />
+      <SearchPanel visible={true} placeholder={"Поиск..."} width={"30vw"} />
+      <Sorting mode={"multiple"} />
+      <Selection mode={"single"} />
       <Pager
-        displayMode={'full'}
+        displayMode={"full"}
         showInfo={true}
         infoText={pagerInfoText}
         showPageSizeSelector={true}
@@ -137,14 +165,14 @@ const ConvictedAudDataGrid = () => {
       />
       <Paging defaultPageSize={30} defaultPageIndex={0} enabled={true} />
       <Column
-        caption={'Информация о транзакции'}
+        caption={"Информация о транзакции"}
         fixed={true}
-        fixedPosition={'left'}
+        fixedPosition={"left"}
       >
         <Column
-          dataField={'id'}
-          caption={'ID записи'}
-          dataType={'number'}
+          dataField={"id"}
+          caption={"ID записи"}
+          dataType={"number"}
           minWidth={110}
           allowReordering
           allowResizing
@@ -153,9 +181,9 @@ const ConvictedAudDataGrid = () => {
           allowHeaderFiltering={false}
         ></Column>
         <Column
-          dataField={'rev'}
-          caption={'№ транзацкии'}
-          dataType={'number'}
+          dataField={"rev"}
+          caption={"№ транзацкии"}
+          dataType={"number"}
           minWidth={80}
           allowReordering
           allowResizing
@@ -164,10 +192,10 @@ const ConvictedAudDataGrid = () => {
           allowHeaderFiltering={false}
         ></Column>
         <Column
-          dataField={'revtype'}
-          caption={'Действие'}
+          dataField={"revtype"}
+          caption={"Действие"}
           minWidth={150}
-          dataType={'string'}
+          dataType={"string"}
           allowReordering
           allowResizing
           filterOperations={stringFilterOperations}
@@ -187,33 +215,45 @@ const ConvictedAudDataGrid = () => {
           />
         </Column>
         <Column
-          dataField={'revision.username'}
-          caption={'Кем совершена'}
+          dataField={"rev.rev"}
+          caption={"Кем совершена"}
           minWidth={200}
-          dataType={'string'}
+          dataType={"string"}
           allowReordering
           allowResizing
           filterOperations={stringFilterOperations}
           allowFiltering
           allowHeaderFiltering={false}
-        ></Column>
+        >
+          <Lookup
+            dataSource={revInfoDS}
+            valueExpr="id"
+            displayExpr={revUsernameLookupDisplayExpression}
+          />
+        </Column>
         <Column
-          dataType={'datetime'}
-          dataField={'revision.revtstmp'}
-          caption={'Когда совершена'}
+          dataType={"datetime"}
+          dataField={"rev.revtstmp"}
+          caption={"Когда совершена"}
           minWidth={170}
-          format={'dd-MM-yyyy HH:mm:ss'}
+          format={"dd-MM-yyyy HH:mm:ss"}
           allowFiltering={true}
           allowEditing={false}
           filterOperations={dateNumberFilterOperations}
           allowHeaderFiltering={false}
-        />
+        >
+          <Lookup
+            dataSource={revInfoDS}
+            valueExpr="id"
+            displayExpr={revTimestampLookupDisplayExpression}
+          />
+        </Column>
       </Column>
-      <Column caption={'Значения строки'}>
+      <Column caption={"Значения строки"}>
         <Column
-          dataField={'secondName'}
-          caption={'Фамилия'}
-          dataType={'string'}
+          dataField={"secondName"}
+          caption={"Фамилия"}
+          dataType={"string"}
           allowReordering
           allowResizing
           filterOperations={stringFilterOperations}
@@ -222,9 +262,9 @@ const ConvictedAudDataGrid = () => {
           allowHeaderFiltering={false}
         ></Column>
         <Column
-          dataField={'firstName'}
-          caption={'Имя'}
-          dataType={'string'}
+          dataField={"firstName"}
+          caption={"Имя"}
+          dataType={"string"}
           allowReordering
           allowResizing
           filterOperations={stringFilterOperations}
@@ -233,9 +273,9 @@ const ConvictedAudDataGrid = () => {
           allowHeaderFiltering={false}
         ></Column>
         <Column
-          dataField={'middleName'}
-          caption={'Отчество'}
-          dataType={'string'}
+          dataField={"middleName"}
+          caption={"Отчество"}
+          dataType={"string"}
           allowReordering
           allowResizing
           filterOperations={stringFilterOperations}
@@ -244,9 +284,9 @@ const ConvictedAudDataGrid = () => {
           allowHeaderFiltering={false}
         ></Column>
         <Column
-          dataField={'squadNumber'}
-          caption={'№ отряда'}
-          dataType={'number'}
+          dataField={"squadNumber"}
+          caption={"№ отряда"}
+          dataType={"number"}
           allowReordering
           allowResizing
           filterOperations={dateNumberFilterOperations}
@@ -255,9 +295,9 @@ const ConvictedAudDataGrid = () => {
           allowHeaderFiltering={false}
         ></Column>
         <Column
-          dataField={'isUnderControl'}
-          caption={'Контроль'}
-          dataType={'boolean'}
+          dataField={"isUnderControl"}
+          caption={"Контроль"}
+          dataType={"boolean"}
           allowReordering
           allowResizing
           allowFiltering={false}
@@ -265,9 +305,9 @@ const ConvictedAudDataGrid = () => {
           allowHeaderFiltering={false}
         ></Column>
         <Column
-          dataField={'archived'}
-          caption={'Архив'}
-          dataType={'boolean'}
+          dataField={"archived"}
+          caption={"Архив"}
+          dataType={"boolean"}
           allowReordering
           allowResizing
           allowFiltering={false}
@@ -275,9 +315,9 @@ const ConvictedAudDataGrid = () => {
           allowHeaderFiltering={false}
         ></Column>
         <Column
-          dataField={'createdBy'}
-          caption={'Создан (кем)'}
-          dataType={'string'}
+          dataField={"createdBy"}
+          caption={"Создан (кем)"}
+          dataType={"string"}
           allowReordering
           allowResizing
           filterOperations={stringFilterOperations}
@@ -287,9 +327,9 @@ const ConvictedAudDataGrid = () => {
           allowHeaderFiltering={false}
         ></Column>
         <Column
-          dataField={'updatedBy'}
-          caption={'Обновлен (кем)'}
-          dataType={'string'}
+          dataField={"updatedBy"}
+          caption={"Обновлен (кем)"}
+          dataType={"string"}
           allowReordering
           allowResizing
           filterOperations={stringFilterOperations}
@@ -299,22 +339,22 @@ const ConvictedAudDataGrid = () => {
           allowHeaderFiltering={false}
         ></Column>
         <Column
-          dataType={'datetime'}
-          dataField={'createdAt'}
-          caption={'Создан (когда)'}
+          dataType={"datetime"}
+          dataField={"createdAt"}
+          caption={"Создан (когда)"}
           minWidth={170}
-          format={'dd-MM-yyyy HH:mm:ss'}
+          format={"dd-MM-yyyy HH:mm:ss"}
           allowFiltering={true}
           allowEditing={false}
           filterOperations={dateNumberFilterOperations}
           allowHeaderFiltering={false}
         />
         <Column
-          dataType={'datetime'}
-          dataField={'updatedAt'}
-          caption={'Обновлен (когда)'}
+          dataType={"datetime"}
+          dataField={"updatedAt"}
+          caption={"Обновлен (когда)"}
           minWidth={170}
-          format={'dd-MM-yyyy HH:mm:ss'}
+          format={"dd-MM-yyyy HH:mm:ss"}
           allowFiltering={true}
           allowEditing={false}
           filterOperations={dateNumberFilterOperations}

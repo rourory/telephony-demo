@@ -214,6 +214,7 @@ const ChangePasswordDialog = () => {
         dragEnabled={true}
         contentRender={renderPopup}
         showCloseButton={false}
+        
       />
     </React.Fragment>
   );

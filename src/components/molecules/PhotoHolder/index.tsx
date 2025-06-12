@@ -95,7 +95,7 @@ export const PhotoHolder: React.FC<Props> = ({
           );
         })
         .catch((err) => {
-          setImage('/no-photos.png');
+          setImage(`${process.env.PUBLIC_URL}/no-photos.png`);
           dispatch(
             setPhotoHolderFetchingStatus({
               id: id,
@@ -133,7 +133,7 @@ export const PhotoHolder: React.FC<Props> = ({
     )
       .then((res) => {
         if (res === true) {
-          setImage('/no-photos.png');
+          setImage(`${process.env.PUBLIC_URL}/no-photos.png`);
           dispatch(
             setPhotoHolderFetchingStatus({
               id: id,
@@ -194,7 +194,7 @@ export const PhotoHolder: React.FC<Props> = ({
         if (res != undefined) {
           createImageFromBlob(res, setImage);
         } else {
-          setImage('/no-photos.png');
+          setImage(`${process.env.PUBLIC_URL}/no-photos.png`);
         }
       })
       .catch((err) => {
@@ -211,7 +211,7 @@ export const PhotoHolder: React.FC<Props> = ({
             message: `Ошибка при загрузке фотографии с сервера ${err}`,
           })
         );
-        setImage('/no-photos.png');
+        setImage(`${process.env.PUBLIC_URL}/no-photos.png`);
       });
   }, []);
 
@@ -229,9 +229,10 @@ export const PhotoHolder: React.FC<Props> = ({
       justifyContent={"flex-end"}
       flexGrow={1}
       border={"1px ridge #505050"}
+      minWidth={"130px"}
     >
       <Avatar
-        alt={'/no-photos.png'}
+        alt={`${process.env.PUBLIC_URL}/no-photos.png}`}
         src={image}
         sx={{ bgcolor: "#363640", width: "100%", height: "100%" }}
         variant={"square"}
@@ -241,7 +242,7 @@ export const PhotoHolder: React.FC<Props> = ({
       </Avatar>
       {showControls && (
         <div className={styles.avatar__button_container}>
-          {image === '/no-photos.png' && (
+          {image === `${process.env.PUBLIC_URL}/no-photos.png` && (
             <IconButton
               color="primary"
               aria-label="upload picture"
@@ -258,7 +259,7 @@ export const PhotoHolder: React.FC<Props> = ({
               <PhotoCamera />
             </IconButton>
           )}
-          {image !== '/no-photos.png' && (
+          {image !== `${process.env.PUBLIC_URL}/no-photos.png` && (
             <>
               <IconButton
                 color="primary"

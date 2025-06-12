@@ -18,7 +18,7 @@ const MainPage: React.FC = () => {
   const backendSettings = useSelector(appSettingsStateSelector);
 
   React.useEffect(() => {
-    if (devices.length == 0 && markedWords != undefined)
+    if (devices.length === 0 && markedWords !== undefined)
       dispatch(loadDevicesThunk(backendSettings));
   }, [markedWords]);
 
@@ -66,7 +66,7 @@ const MainPage: React.FC = () => {
           ))}
         </Grid>
       )}
-      {fetching == "ERROR" && (
+      {fetching === "ERROR" && (
         <div
           style={{
             display: "flex",

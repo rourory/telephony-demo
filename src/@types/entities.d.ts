@@ -199,7 +199,7 @@ interface ServerSettingsEntity extends Entity {
 }
 
 //AUDITION
-interface Revision {
+interface Revision extends Entity {
   rev: number;
   revtstmp: number;
   username: string;
