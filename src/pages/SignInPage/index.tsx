@@ -88,7 +88,6 @@ const SignInPage: React.FC = () => {
     <>
       <ApplicationBar />
       <div className={styles.container}>
-        <div className={styles.demo}>WEB-DEMO</div>
         <LoadingCurtain show={userFetchStatus === "LOADING"} />
         <div className={styles.form_holder}>
           <Box

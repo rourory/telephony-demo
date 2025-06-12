@@ -27,7 +27,6 @@ const MainLayout: React.FC = () => {
       <CssBaseline />
       <ApplicationBar withDrawer />
       <ApplicationDrawer />
-      <div className={styles.demo}>WEB-DEMO</div>
       <Box
         component="main"
         sx={{

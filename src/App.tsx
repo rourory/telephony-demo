@@ -73,6 +73,7 @@ function App() {
       }}
     >
       <ThemeProvider theme={theme}>
+        
         <BrowserRouter basename={process.env.PUBLIC_URL}>
           <Routes>
             {user ? (
@@ -86,7 +87,7 @@ function App() {
                   element={<AdministrationDataGrid />}
                 />
                 <Route path="/marked_words" element={<MarkedWordsPage />} />
-                <Route path="/statistics" element={<StatisticsPage />} />
+                {/* <Route path="/statistics" element={<StatisticsPage />} /> */}
                 <Route
                   path="/extra_call_permissions"
                   element={<ExtraCallPermissionPage />}
