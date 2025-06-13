@@ -22,12 +22,8 @@ import {
   removeUser,
   userSelector,
 } from "../../../redux/slices/user-slice/user-slice";
-import { APP_TOKEN_ISSUED_KEY, APP_TOKEN_KEY } from "../../../api/constants";
+import { APP_TOKEN_KEY } from "../../../api/constants";
 import { setOpen } from "../../../redux/slices/drawer-slice/drawer-slice";
-import {
-  setChangePasswordDialogOpenState,
-  setChangePasswordDialogText,
-} from "../../../redux/slices/change-password-dialog-slice/change-password-dialog-slice";
 
 const AppBarMenu: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -61,7 +57,6 @@ const AppBarMenu: React.FC = () => {
   const logout = React.useCallback(() => {
     handleClose();
     localStorage.removeItem(APP_TOKEN_KEY);
-    localStorage.removeItem(APP_TOKEN_ISSUED_KEY);
     dispatch(removeUser());
     dispatch(setOpen(false));
     navigate("/");

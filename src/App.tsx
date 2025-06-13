@@ -8,7 +8,7 @@ import { loadMessages, locale } from "devextreme/localization";
 import { SnackbarKey, SnackbarProvider, closeSnackbar } from "notistack";
 import { IconButton } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
-import { BrowserRouter, HashRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import NotificationEnqueuer from "./components/organisms/NotificationEnqueuer";
 import CloseApplicationDialog from "./components/organisms/CloseApplicationDialog";
 import MainLayout from "./layouts/MainLayout";
@@ -24,7 +24,7 @@ import MarkedWordsPage from "./pages/MarkedWordsPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import SettingsPage from "./pages/SettingsPage";
 import SignInPage from "./pages/SignInPage";
-import StatisticsPage from "./pages/StatiscticsPage";
+import { refreshTokenQuery } from "./api/queries";
 
 function App() {
   const themeOptions = useSelector(applicationThemeSelector);

@@ -1,11 +1,11 @@
-import axios, { AxiosError } from 'axios';
+import axios, { AxiosError } from "axios";
 // import { LOCAL_HOST } from './constants';
-import { convertMessagesArrayToString } from './api-util';
-import { AUTH, IMAGE } from './end-points';
+import { convertMessagesArrayToString } from "./api-util";
+import { AUTH, IMAGE } from "./end-points";
 import {
   getTokenFromLocalStorage,
   setTokenToLocalStorage,
-} from '../utils/jwt-utils';
+} from "../utils/jwt-utils";
 
 /**
  * http://hostname:PORT/{point}
@@ -18,29 +18,26 @@ export async function fetchAllQuery<T extends Entity | AuditionEntity>(
   backendSettings: BackendSettings,
   point: string,
   params?: string,
-  withPlus?: boolean,
-) {
+  withPlus?: boolean
+): Promise<DataResponce<T>> {
   let uri = encodeURI(
     `${backendSettings.backendProtocol}://${backendSettings.backendAddress}:${backendSettings.backendPort}` +
       point +
-      (params ? params : ''),
+      (params ? params : "")
   );
-  if (withPlus) uri = uri.replace('+', '%2B');
+  if (withPlus) uri = uri.replace("+", "%2B");
+
   return axios
     .get<DataResponce<T>>(uri, {
       headers: { Authorization: getTokenFromLocalStorage() },
     })
     .then((res) => {
-      if (res.headers.authorization)
-        setTokenToLocalStorage(res.headers.authorization);
       return res.data;
     })
-    .catch((err: AxiosError) => {
-      if (err.response?.headers.authorization)
-        setTokenToLocalStorage(err.response?.headers.authorization);
+    .catch(async (err: AxiosError) => {
       const errorData = (err.response?.data as ErrorWithMessage) || undefined;
       throw new Error(`${err.message} (${errorData?.messages})`);
-    });
+    }) as Promise<DataResponce<T>>;
 }
 
 /**
@@ -53,26 +50,26 @@ export async function fetchAllQuery<T extends Entity | AuditionEntity>(
 export async function fetchOneQuery<T extends Entity | AuditionEntity>(
   backendSettings: BackendSettings,
   point: string,
-  id: number,
+  id: number
 ) {
   return axios
     .get<T>(
       encodeURI(
         `${backendSettings.backendProtocol}://${backendSettings.backendAddress}:${backendSettings.backendPort}` +
           point +
-          '/' +
-          id,
+          "/" +
+          id
       ),
       {
         headers: { Authorization: getTokenFromLocalStorage() },
-      },
+      }
     )
     .then((res) => {
-      setTokenToLocalStorage(res.headers.authorization || '');
+      setTokenToLocalStorage(res.headers.authorization || "");
       return res.data;
     })
     .catch((err: AxiosError) => {
-      setTokenToLocalStorage(err.response?.headers.authorization || '');
+      setTokenToLocalStorage(err.response?.headers.authorization || "");
       const errorData = (err.response?.data as ErrorWithMessage) || undefined;
       throw new Error(`${err.message} (${errorData?.messages})`);
     });
@@ -88,22 +85,22 @@ export async function fetchOneQuery<T extends Entity | AuditionEntity>(
 export async function deleteQuery(
   backendSettings: BackendSettings,
   point: string,
-  id: number,
+  id: number
 ) {
   return axios
     .delete<number | boolean | ErrorWithMessage | void>(
       `${backendSettings.backendProtocol}://${backendSettings.backendAddress}:${backendSettings.backendPort}` +
         point +
         `?id=${id}`,
-      { headers: { Authorization: getTokenFromLocalStorage() } },
+      { headers: { Authorization: getTokenFromLocalStorage() } }
     )
     .then((res) => {
-      setTokenToLocalStorage(res.headers.authorization || '');
+      setTokenToLocalStorage(res.headers.authorization || "");
       if (res.status !== 200)
         throw convertMessagesArrayToString(res.data as ErrorWithMessage);
     })
     .catch((err: AxiosError) => {
-      setTokenToLocalStorage(err.response?.headers.authorization || '');
+      setTokenToLocalStorage(err.response?.headers.authorization || "");
       const errorData = (err.response?.data as ErrorWithMessage) || undefined;
       throw new Error(`${err.message} (${errorData?.messages})`);
     });
@@ -112,7 +109,7 @@ export async function deleteQuery(
 export async function insertQuery<T extends Entity | AuditionEntity>(
   backendSettings: BackendSettings,
   point: string,
-  entity: T,
+  entity: T
 ) {
   return axios
     .post<T | Violations | ErrorWithMessage>(
@@ -122,17 +119,17 @@ export async function insertQuery<T extends Entity | AuditionEntity>(
       {
         headers: {
           Authorization: getTokenFromLocalStorage(),
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-      },
+      }
     )
     .then((res) => {
-      setTokenToLocalStorage(res.headers.authorization || '');
+      setTokenToLocalStorage(res.headers.authorization || "");
       if (res.status === 200 || res.status === 203) return res;
       else throw convertMessagesArrayToString(res.data as ErrorWithMessage);
     })
     .catch((err: AxiosError) => {
-      setTokenToLocalStorage(err.response?.headers.authorization || '');
+      setTokenToLocalStorage(err.response?.headers.authorization || "");
       const errorData = (err.response?.data as ErrorWithMessage) || undefined;
       throw new Error(`${err.message} (${errorData?.messages})`);
     });
@@ -141,7 +138,7 @@ export async function insertQuery<T extends Entity | AuditionEntity>(
 export async function updateQuery<T extends Entity | AuditionEntity>(
   backendSettings: BackendSettings,
   point: string,
-  entity: T,
+  entity: T
 ) {
   return axios
     .put<T | Violations | ErrorWithMessage>(
@@ -151,12 +148,12 @@ export async function updateQuery<T extends Entity | AuditionEntity>(
       {
         headers: {
           Authorization: getTokenFromLocalStorage(),
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-      },
+      }
     )
     .then((res) => {
-      setTokenToLocalStorage(res.headers.authorization || '');
+      setTokenToLocalStorage(res.headers.authorization || "");
       if (res.status === 200 || res.status === 203) return res;
       else {
         const error = res.data as ErrorWithMessage;
@@ -164,7 +161,7 @@ export async function updateQuery<T extends Entity | AuditionEntity>(
       }
     })
     .catch((err: AxiosError) => {
-      setTokenToLocalStorage(err.response?.headers.authorization || '');
+      setTokenToLocalStorage(err.response?.headers.authorization || "");
       const errorData = (err.response?.data as ErrorWithMessage) || undefined;
       throw new Error(`${err.message} (${errorData?.messages})`);
     });
@@ -178,55 +175,51 @@ export async function updateQuery<T extends Entity | AuditionEntity>(
  */
 export async function signInQuery(
   backendSettings: BackendSettings,
-  { username, password }: Credentials,
+  { username, password }: Credentials
 ) {
   return axios.post<UserDataResponce | ErrorWithMessage>(
     `${backendSettings.backendProtocol}://${backendSettings.backendAddress}:${backendSettings.backendPort}` +
       AUTH +
-      '/authenticate',
+      "/authenticate",
     {
       username,
       password,
-    },
+    }
   );
 }
 
 /**
  * Метод отправки данных пользователя для авторизации через токен.
- * @param token - токен пользователя
  * @returns - данные пользователя после регистрации или ошибку
  */
-export async function refreshTokenQuery(
-  backendSettings: BackendSettings,
-  token: string,
-) {
+export async function refreshTokenQuery(backendSettings: BackendSettings) {
   return axios.post<UserDataResponce | ErrorWithMessage>(
     `${backendSettings.backendProtocol}://${backendSettings.backendAddress}:${backendSettings.backendPort}` +
       AUTH +
-      '/refresh',
-    token,
+      "/refresh",
+    { token: getTokenFromLocalStorage() }
   );
 }
 
 export async function fetchImage(
   backendSettings: BackendSettings,
   point: string,
-  id: number,
+  id: number
 ) {
   return axios
     .get<Blob>(
       encodeURI(
-        `${backendSettings.backendProtocol}://${backendSettings.backendAddress}:${backendSettings.backendPort}${point}/${id}${IMAGE}`,
+        `${backendSettings.backendProtocol}://${backendSettings.backendAddress}:${backendSettings.backendPort}${point}/${id}${IMAGE}`
       ),
       {
-        responseType: 'blob',
+        responseType: "blob",
         headers: {
           Authorization: getTokenFromLocalStorage(),
         },
-      },
+      }
     )
     .then((res) => {
-      setTokenToLocalStorage(res.headers.authorization || '');
+      setTokenToLocalStorage(res.headers.authorization || "");
       if (res.status !== 200) {
         return undefined;
       }
@@ -247,21 +240,21 @@ export async function fetchImage(
 export async function deleteImage(
   backendSettings: BackendSettings,
   point: string,
-  id: number,
+  id: number
 ) {
   return axios
     .delete<boolean>(
       encodeURI(
-        `${backendSettings.backendProtocol}://${backendSettings.backendAddress}:${backendSettings.backendPort}${point}/${id}${IMAGE}`,
+        `${backendSettings.backendProtocol}://${backendSettings.backendAddress}:${backendSettings.backendPort}${point}/${id}${IMAGE}`
       ),
       {
         headers: {
           Authorization: getTokenFromLocalStorage(),
         },
-      },
+      }
     )
     .then((res) => {
-      setTokenToLocalStorage(res.headers.authorization || '');
+      setTokenToLocalStorage(res.headers.authorization || "");
       return res.data;
     })
     .catch((err: Error) => {
@@ -273,27 +266,27 @@ export async function uploadImage(
   backendSettings: BackendSettings,
   point: string,
   id: number,
-  formData: FormData,
+  formData: FormData
 ) {
   return await axios
     .post<ArrayBuffer>(
       encodeURI(
-        `${backendSettings.backendProtocol}://${backendSettings.backendAddress}:${backendSettings.backendPort}${point}/${id}${IMAGE}`,
+        `${backendSettings.backendProtocol}://${backendSettings.backendAddress}:${backendSettings.backendPort}${point}/${id}${IMAGE}`
       ),
       formData,
       {
-        responseType: 'arraybuffer',
+        responseType: "arraybuffer",
         headers: {
           Authorization: getTokenFromLocalStorage(),
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
         },
-      },
+      }
     )
     .then((res) => {
-      setTokenToLocalStorage(res.headers.authorization || '');
+      setTokenToLocalStorage(res.headers.authorization || "");
       if (res.status !== 200) {
         const error = JSON.parse(
-          new TextDecoder('utf-8').decode(res.data as ArrayBuffer),
+          new TextDecoder("utf-8").decode(res.data as ArrayBuffer)
         ) as ErrorWithMessage;
         throw new Error(convertMessagesArrayToString(error));
       }

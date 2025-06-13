@@ -13,7 +13,7 @@ import {
   userSelector,
 } from "../../../redux/slices/user-slice/user-slice";
 import { loadNotArchivedAdministrationDataThunk } from "../../../redux/slices/user-slice/thunks";
-import { APP_TOKEN_ISSUED_KEY, APP_TOKEN_KEY } from "../../../api/constants";
+import { APP_TOKEN_KEY } from "../../../api/constants";
 
 import UltraLightLoadingIndicator from "../UltraLightLoadingIndicator";
 import { appSettingsStateSelector } from "../../../redux/slices/app-settings-slice/app-settings-slice";
@@ -35,7 +35,6 @@ const AdministrationAutocompleteField: React.FC<{
   } = useSelector(userSelector);
   const onOpen = React.useCallback(() => {
     localStorage.removeItem(APP_TOKEN_KEY);
-    localStorage.removeItem(APP_TOKEN_ISSUED_KEY);
     dispatch(loadNotArchivedAdministrationDataThunk(backendSettings));
     dispatch(setUserAutocompleteFieldOpen(true));
   }, [backendSettings]);

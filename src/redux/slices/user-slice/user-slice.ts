@@ -1,11 +1,10 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { RootState } from '../../store';
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { RootState } from "../../store";
 import {
   loadNotArchivedAdministrationDataThunk,
   loadPermissions,
-  refreshToken,
   signIn,
-} from './thunks';
+} from "./thunks";
 
 export type UserSliceState = UserSliceType & UserAutocompleteFieldStateType;
 
@@ -13,12 +12,12 @@ const initialState: UserSliceState = {
   autocompleteFieldUser: null,
   usersAutocompleteFieldOpen: false,
   usersForAutocompleteField: [],
-  fetchingStatus: 'SUCCESS',
+  fetchingStatus: "SUCCESS",
   user: undefined,
-  userFetchStatus: 'SUCCESS',
+  userFetchStatus: "SUCCESS",
   credentials: {
-    username: '',
-    password: '',
+    username: "",
+    password: "",
   },
   permissions: {
     roleId: null,
@@ -87,7 +86,7 @@ const initialState: UserSliceState = {
 };
 
 const userSlice = createSlice({
-  name: 'user',
+  name: "user",
   initialState,
   reducers: {
     setUser(state, action: PayloadAction<AdministrationEntity>) {
@@ -104,7 +103,7 @@ const userSlice = createSlice({
     },
     setUserAutocompleteFieldFetchingStatus(
       state,
-      action: PayloadAction<FetchingStatus>,
+      action: PayloadAction<FetchingStatus>
     ) {
       state.fetchingStatus = action.payload;
     },
@@ -113,13 +112,13 @@ const userSlice = createSlice({
     },
     setUsersForAutocompleteField(
       state,
-      action: PayloadAction<Array<AdministrationEntity>>,
+      action: PayloadAction<Array<AdministrationEntity>>
     ) {
       state.usersForAutocompleteField = action.payload;
     },
     setUserToAutocompleteField(
       state,
-      action: PayloadAction<AdministrationEntity | null>,
+      action: PayloadAction<AdministrationEntity | null>
     ) {
       state.autocompleteFieldUser = action.payload;
     },
@@ -133,45 +132,36 @@ const userSlice = createSlice({
         state.user.passwordChangeDate = action.payload;
       }
     },
+    setUserFetchStatus(state, action: PayloadAction<FetchingStatus>) {
+      state.userFetchStatus = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(signIn.pending, (state) => {
       state.user = undefined;
-      state.userFetchStatus = 'LOADING';
+      state.userFetchStatus = "LOADING";
     });
     builder.addCase(signIn.fulfilled, (state, action) => {
-      state.userFetchStatus = 'SUCCESS';
+      state.userFetchStatus = "SUCCESS";
       state.user = action.payload.user;
-      state.credentials = { username: '', password: '' };
+      state.credentials = { username: "", password: "" };
     });
     builder.addCase(signIn.rejected, (state, action) => {
       state.user = undefined;
-      state.userFetchStatus = 'ERROR';
-    });
-    builder.addCase(refreshToken.pending, (state) => {
-      state.user = undefined;
-      state.userFetchStatus = 'LOADING';
-    });
-    builder.addCase(refreshToken.fulfilled, (state, action) => {
-      state.userFetchStatus = 'SUCCESS';
-      state.user = action.payload.user;
-    });
-    builder.addCase(refreshToken.rejected, (state) => {
-      state.userFetchStatus = 'SUCCESS';
-      state.user = undefined;
+      state.userFetchStatus = "ERROR";
     });
     builder.addCase(
       loadNotArchivedAdministrationDataThunk.fulfilled,
       (state, action) => {
-        state.fetchingStatus = 'SUCCESS';
+        state.fetchingStatus = "SUCCESS";
         state.usersForAutocompleteField = action.payload.data;
-      },
+      }
     );
     builder.addCase(
       loadNotArchivedAdministrationDataThunk.rejected,
       (state, action) => {
-        state.fetchingStatus = 'ERROR';
-      },
+        state.fetchingStatus = "ERROR";
+      }
     );
     builder.addCase(loadPermissions.fulfilled, (state, action) => {
       if (action.payload.length > 0) state.permissions = action.payload[0];
@@ -194,4 +184,5 @@ export const {
   setUserToAutocompleteField,
   setUserPassword,
   setChangePasswordDate,
+  setUserFetchStatus,
 } = userSlice.actions;

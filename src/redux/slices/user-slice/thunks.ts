@@ -2,7 +2,7 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { setTokenToLocalStorage } from "../../../utils/jwt-utils";
 import {
   fetchAllQuery,
-  refreshTokenQuery,
+
   signInQuery,
 } from "../../../api/queries";
 import { AxiosError } from "axios";
@@ -28,8 +28,6 @@ export const signIn = createAsyncThunk<
   await signInQuery(backendSettings, credentials)
     .then((res) => {
       status = res.status;
-      console.log(res);
-
       if (status === 403) {
         const forbiddenMessage = "Доступ запрещен";
         thunkApi.dispatch(
@@ -79,45 +77,6 @@ export const signIn = createAsyncThunk<
           message: convertMessagesArrayToString(response),
         })
       );
-    });
-
-  if (status !== 200) {
-    return thunkApi.rejectWithValue(response);
-  } else {
-    return response;
-  }
-});
-
-/**
- * Refreshes an old token. You can see result in signInSlice function at user slice.
- */
-export const refreshToken = createAsyncThunk<
-  UserDataResponce,
-  { token: string; backendSettings: BackendSettings }
->("user/refreshToken", async ({ token, backendSettings }, thunkApi) => {
-  let status = 0;
-  let response: any = undefined;
-
-  await refreshTokenQuery(backendSettings, token)
-    .then((res) => {
-      status = res.status;
-
-      if (status === 403) {
-        throw new AxiosError("Доступ запрещен", status.toString());
-      } else if (status !== 200) {
-        response = res.data as ErrorWithMessage;
-      } else {
-        const { token } = res.data as UserDataResponce;
-        setTokenToLocalStorage(token);
-        response = res.data;
-      }
-    })
-    .catch((err: AxiosError) => {
-      const messages: string[] = [];
-      if (err.code === "ERR_NETWORK")
-        messages.push("Ошибка соединения с сервером");
-      else messages.push(err.message);
-      response = { messages: messages };
     });
 
   if (status !== 200) {

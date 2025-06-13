@@ -1,5 +1,4 @@
 const BASE = "/api/v1";
-// const BASE = "/api";
 const AUDITION = `${BASE}/audition`;
 
 export const CONVICTED = `${BASE}/convicted`;

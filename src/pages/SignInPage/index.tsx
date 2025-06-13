@@ -7,6 +7,8 @@ import LoadingCurtain from "../../components/molecules/LoadingCurtain";
 import { AppDispatch } from "../../redux/store";
 import {
   setPassword,
+  setUser,
+  setUserFetchStatus,
   setUserToAutocompleteField,
   setUsername,
   userSelector,
@@ -15,7 +17,7 @@ import CssBaseline from "@mui/material/CssBaseline/CssBaseline";
 import TextField from "@mui/material/TextField/TextField";
 import Box from "@mui/material/Box/Box";
 import ApplicationBar from "../../components/organisms/AppBar";
-import { signIn } from "../../redux/slices/user-slice/thunks";
+import { loadPermissions, signIn } from "../../redux/slices/user-slice/thunks";
 import StyledParagragp from "../../components/atoms/StyledParagraph/Index";
 import AdministrationAutocompleteField from "../../components/molecules/AdministrationAutocompleteField";
 import { IconButton, InputAdornment } from "@mui/material";
@@ -23,6 +25,9 @@ import { Visibility, VisibilityOff } from "@mui/icons-material";
 import BackendSettings from "../../components/molecules/BackendSettings";
 import UltraLightLoadingIndicator from "../../components/molecules/UltraLightLoadingIndicator";
 import { appSettingsStateSelector } from "../../redux/slices/app-settings-slice/app-settings-slice";
+import { refreshTokenQuery } from "../../api/queries";
+import { setTokenToLocalStorage } from "../../utils/jwt-utils";
+import { loadServerSettingsThunk } from "../../redux/slices/server-settings-slice/thunks";
 
 const SignInPage: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -48,14 +53,14 @@ const SignInPage: React.FC = () => {
   );
 
   const handleSubmit = React.useCallback(
-    async (event: React.FormEvent<HTMLFormElement>) => {
+    (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();
       const data = new FormData(event.currentTarget);
       const authCredentials: Credentials = {
         username: credentials.username || "",
         password: data.get("password")?.toString() || "",
       };
-      await dispatch(
+      dispatch(
         signIn({
           credentials: authCredentials,
           backendSettings: backendSettings,
@@ -83,6 +88,30 @@ const SignInPage: React.FC = () => {
     },
     []
   );
+
+  React.useEffect(() => {
+    dispatch(setUserFetchStatus("LOADING"));
+    refreshTokenQuery(backendSettings)
+      .then((res) => {
+        if (res.status === 200) {
+          const data = res.data as UserDataResponce;
+          dispatch(
+            loadPermissions({
+              roleId: data.user.roleId,
+              backendSettings: backendSettings,
+            })
+          );
+          dispatch(loadServerSettingsThunk(backendSettings));
+          setTokenToLocalStorage(data.token);
+          dispatch(setUser(data.user));
+          dispatch(setUserFetchStatus("SUCCESS"));
+        }
+      })
+      .catch((err) => {
+        dispatch(setUserFetchStatus("ERROR"));
+        console.log(err);
+      });
+  }, []);
 
   return (
     <>
