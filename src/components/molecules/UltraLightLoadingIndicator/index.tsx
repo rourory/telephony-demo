@@ -1,12 +1,12 @@
-import React, { useEffect, useRef } from 'react';
-import { loadingController } from '../../../utils/loading-animation-controller';
+import React, { useEffect, useRef } from "react";
+import { loadingController } from "../../../utils/loading-animation-controller";
 
 interface UltraLightLoadingIndicatorProps {
   fontSize?: string;
 }
 
 const UltraLightLoadingIndicator: React.FC<UltraLightLoadingIndicatorProps> = ({
-  fontSize = '1,5rem',
+  fontSize = "1,5rem",
 }) => {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -24,12 +24,13 @@ const UltraLightLoadingIndicator: React.FC<UltraLightLoadingIndicatorProps> = ({
     <div
       ref={ref}
       style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontFamily: 'monospace',
+        userSelect: "none",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        fontFamily: "monospace",
         fontSize,
-        whiteSpace: 'pre',
+        whiteSpace: "pre",
       }}
     />
   );

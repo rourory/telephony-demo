@@ -26,7 +26,10 @@ import BackendSettings from "../../components/molecules/BackendSettings";
 import UltraLightLoadingIndicator from "../../components/molecules/UltraLightLoadingIndicator";
 import { appSettingsStateSelector } from "../../redux/slices/app-settings-slice/app-settings-slice";
 import { refreshTokenQuery } from "../../api/queries";
-import { setTokenToLocalStorage } from "../../utils/jwt-utils";
+import {
+  getTokenFromLocalStorage,
+  setTokenToLocalStorage,
+} from "../../utils/jwt-utils";
 import { loadServerSettingsThunk } from "../../redux/slices/server-settings-slice/thunks";
 
 const SignInPage: React.FC = () => {
@@ -90,27 +93,29 @@ const SignInPage: React.FC = () => {
   );
 
   React.useEffect(() => {
-    dispatch(setUserFetchStatus("LOADING"));
-    refreshTokenQuery(backendSettings)
-      .then((res) => {
-        if (res.status === 200) {
-          const data = res.data as UserDataResponce;
-          dispatch(
-            loadPermissions({
-              roleId: data.user.roleId,
-              backendSettings: backendSettings,
-            })
-          );
-          dispatch(loadServerSettingsThunk(backendSettings));
-          setTokenToLocalStorage(data.token);
-          dispatch(setUser(data.user));
-          dispatch(setUserFetchStatus("SUCCESS"));
-        }
-      })
-      .catch((err) => {
-        dispatch(setUserFetchStatus("ERROR"));
-        console.log(err);
-      });
+    if (getTokenFromLocalStorage()) {
+      dispatch(setUserFetchStatus("LOADING"));
+      refreshTokenQuery(backendSettings)
+        .then((res) => {
+          if (res.status === 200) {
+            const data = res.data as UserDataResponce;
+            dispatch(
+              loadPermissions({
+                roleId: data.user.roleId,
+                backendSettings: backendSettings,
+              })
+            );
+            dispatch(loadServerSettingsThunk(backendSettings));
+            setTokenToLocalStorage(data.token);
+            dispatch(setUser(data.user));
+            dispatch(setUserFetchStatus("SUCCESS"));
+          }
+        })
+        .catch((err) => {
+          dispatch(setUserFetchStatus("ERROR"));
+          console.log(err);
+        });
+    }
   }, []);
 
   return (
