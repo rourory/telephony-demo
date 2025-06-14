@@ -1,21 +1,45 @@
-import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from "react";
+import { useDispatch, useSelector } from "react-redux";
 
-import { useRemoteServices } from './useRemoteServices';
-import { RecordingRequestCodes, CallResultConstant, InternalCallTypes, UIControllingRequestActionCodes } from '../@types/enums';
-import { setCommitSessionDialogState } from '../redux/slices/commit-session-slice/commit-session-slice';
-import { setIsRecordProcessingStarting, setCommitSessionButtonLoading, setContactValueFieldDisabled, setIsAudioStreamingProcessing, setIsMicRecordingProcessing, setCallActionButtonsDisabled, setReloadContactButtonDisabled, setDoCallButtonLoading, setCommitSessionButtonDisabled, setCancelCallButtonLoading } from '../redux/slices/devices-slice/devices-slice';
-import { serverSettingsSelector } from '../redux/slices/server-settings-slice/server-settings-slice';
-import { userSelector } from '../redux/slices/user-slice/user-slice';
-import { vncVideoShowSelector, setOpenVideoFrame, setActualVncServiceUrl } from '../redux/slices/vnc-video-show-slice/vnc-video-show-slice';
-import { AppDispatch } from '../redux/store';
-
+import { useRemoteServices } from "./useRemoteServices";
+import {
+  RecordingRequestCodes,
+  CallResultConstant,
+  InternalCallTypes,
+  UIControllingRequestActionCodes,
+} from "../@types/enums";
+import { setCommitSessionDialogState } from "../redux/slices/commit-session-slice/commit-session-slice";
+import {
+  setIsRecordProcessingStarting,
+  setCommitSessionButtonLoading,
+  setContactValueFieldDisabled,
+  setIsAudioStreamingProcessing,
+  setIsMicRecordingProcessing,
+  setCallActionButtonsDisabled,
+  setReloadContactButtonDisabled,
+  setDoCallButtonLoading,
+  setCommitSessionButtonDisabled,
+  setCancelCallButtonLoading,
+  setIsRecordingProcessing,
+  setDoCallButtonDisabled,
+  setCancelCallButtonDisabled,
+} from "../redux/slices/devices-slice/devices-slice";
+import { serverSettingsSelector } from "../redux/slices/server-settings-slice/server-settings-slice";
+import { userSelector } from "../redux/slices/user-slice/user-slice";
+import {
+  vncVideoShowSelector,
+  setOpenVideoFrame,
+  setActualVncServiceUrl,
+} from "../redux/slices/vnc-video-show-slice/vnc-video-show-slice";
+import { AppDispatch } from "../redux/store";
+import { sleep } from "../utils/sleep";
+import { addNotification } from "../redux/slices/notify-slice/notify-slice";
 
 export const useDeviceButtonsHandlers = (ipAddress: string) => {
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector(userSelector);
   const { standardCallDuration, beforeTimerEndsWarningMinutes } = useSelector(
-    serverSettingsSelector,
+    serverSettingsSelector
   );
 
   const {
@@ -29,61 +53,87 @@ export const useDeviceButtonsHandlers = (ipAddress: string) => {
   const { actualVncServiceUrl, openVncVideoFrame } =
     useSelector(vncVideoShowSelector);
 
-  const beginCommonSessionButtonClicked = React.useCallback(() => {
+  const beginCommonSessionButtonClicked = React.useCallback(async () => {
     dispatch(
       setIsRecordProcessingStarting({
         address: ipAddress,
         booleanResult: true,
-      }),
+      })
     );
-    recordingService?.socket?.send(
-      JSON.stringify({
-        code: RecordingRequestCodes.CREATE_RECORDING,
-        settings: {
-          userName: recordingService.personData?.firstName,
-          userSurName: recordingService.personData?.secondName,
-          userMiddleName: recordingService.personData?.middleName,
-          userId: recordingService.personData?.id,
-          videoPath: recordingService.videoPath,
-          resultId: CallResultConstant.CALL_PROCESSING,
-          administrationId: user?.id,
-          durationMinutes: standardCallDuration?.duration,
-          beforeTimerEndsWarningMinutes: beforeTimerEndsWarningMinutes,
-          type: InternalCallTypes.COMMON,
-          internalCallType: InternalCallTypes.EXTRA,
-        },
-      }),
+    await sleep(2000);
+    dispatch(
+      addNotification({
+        type: "success",
+        message: "Сеанс открыт. Демонстрация закончена.",
+      })
     );
+    dispatch(
+      setIsRecordProcessingStarting({
+        address: ipAddress,
+        booleanResult: false,
+      })
+    );
+    // recordingService?.socket?.send(
+    //   JSON.stringify({
+    //     code: RecordingRequestCodes.CREATE_RECORDING,
+    //     settings: {
+    //       userName: recordingService.personData?.firstName,
+    //       userSurName: recordingService.personData?.secondName,
+    //       userMiddleName: recordingService.personData?.middleName,
+    //       userId: recordingService.personData?.id,
+    //       videoPath: recordingService.videoPath,
+    //       resultId: CallResultConstant.CALL_PROCESSING,
+    //       administrationId: user?.id,
+    //       durationMinutes: standardCallDuration?.duration,
+    //       beforeTimerEndsWarningMinutes: beforeTimerEndsWarningMinutes,
+    //       type: InternalCallTypes.COMMON,
+    //       internalCallType: InternalCallTypes.EXTRA,
+    //     },
+    //   }),
+    // );
   }, [recordingService, standardCallDuration, beforeTimerEndsWarningMinutes]);
 
   const beginExtraPermissionCallButtonClicked = React.useCallback(
-    (extraCallPermission: ExtraCallPermissionEntity) => {
+    async (extraCallPermission: ExtraCallPermissionEntity) => {
       dispatch(
         setIsRecordProcessingStarting({
           address: ipAddress,
           booleanResult: true,
-        }),
+        })
       );
-      recordingService?.socket?.send(
-        JSON.stringify({
-          code: RecordingRequestCodes.CREATE_RECORDING,
-          settings: {
-            userName: recordingService.personData?.firstName,
-            userSurName: recordingService.personData?.secondName,
-            userMiddleName: recordingService.personData?.middleName,
-            userId: recordingService.personData?.id,
-            videoPath: recordingService.videoPath,
-            resultId: CallResultConstant.CALL_PROCESSING,
-            administrationId: user?.id,
-            durationMinutes: extraCallPermission.duration.duration,
-            beforeTimerEndsWarningMinutes: beforeTimerEndsWarningMinutes,
-            internalCallType: InternalCallTypes.EXTRA,
-            extraCallPermissionId: extraCallPermission.id,
-          },
-        }),
+      await sleep(2000);
+      dispatch(
+        addNotification({
+          type: "success",
+          message: "Дополнительынй сеанс открыт. Демонстрация закончена.",
+        })
       );
+      dispatch(
+        setIsRecordProcessingStarting({
+          address: ipAddress,
+          booleanResult: false,
+        })
+      );
+      // recordingService?.socket?.send(
+      //   JSON.stringify({
+      //     code: RecordingRequestCodes.CREATE_RECORDING,
+      //     settings: {
+      //       userName: recordingService.personData?.firstName,
+      //       userSurName: recordingService.personData?.secondName,
+      //       userMiddleName: recordingService.personData?.middleName,
+      //       userId: recordingService.personData?.id,
+      //       videoPath: recordingService.videoPath,
+      //       resultId: CallResultConstant.CALL_PROCESSING,
+      //       administrationId: user?.id,
+      //       durationMinutes: extraCallPermission.duration.duration,
+      //       beforeTimerEndsWarningMinutes: beforeTimerEndsWarningMinutes,
+      //       internalCallType: InternalCallTypes.EXTRA,
+      //       extraCallPermissionId: extraCallPermission.id,
+      //     },
+      //   })
+      // );
     },
-    [recordingService, standardCallDuration, beforeTimerEndsWarningMinutes],
+    [recordingService, standardCallDuration, beforeTimerEndsWarningMinutes]
   );
 
   const commitCallButtonClicked = React.useCallback(() => {
@@ -91,7 +141,7 @@ export const useDeviceButtonsHandlers = (ipAddress: string) => {
       setCommitSessionButtonLoading({
         address: ipAddress,
         loading: true,
-      }),
+      })
     );
     dispatch(
       setCommitSessionDialogState({
@@ -99,48 +149,87 @@ export const useDeviceButtonsHandlers = (ipAddress: string) => {
         open: true,
         person: recordingService?.personData || null,
         successAction: () => {
-          recordingService?.socket?.send(
-            JSON.stringify({
-              code: RecordingRequestCodes.END_RECORDING,
-              settings: { resultId: CallResultConstant.CALL_SUCCEEDED },
-            }),
+          // recordingService?.socket?.send(
+          //   JSON.stringify({
+          //     code: RecordingRequestCodes.END_RECORDING,
+          //     settings: { resultId: CallResultConstant.CALL_SUCCEEDED },
+          //   })
+          // );
+          // dispatch(
+          //   setContactValueFieldDisabled({
+          //     address: ipAddress,
+          //     disabled: false,
+          //   })
+          // );
+          dispatch(
+            addNotification({
+              type: "success",
+              message:
+                "Сессия завершена и помечена как 'Дозвонился'. Демонстрация закончена",
+            })
           );
           dispatch(
-            setContactValueFieldDisabled({
+            setCommitSessionButtonLoading({
               address: ipAddress,
-              disabled: false,
-            }),
+              loading: false,
+            })
           );
         },
         failedAction: () => {
-          recordingService?.socket?.send(
-            JSON.stringify({
-              code: RecordingRequestCodes.END_RECORDING,
-              settings: { resultId: CallResultConstant.CALL_FAILED },
-            }),
+          // recordingService?.socket?.send(
+          //   JSON.stringify({
+          //     code: RecordingRequestCodes.END_RECORDING,
+          //     settings: { resultId: CallResultConstant.CALL_FAILED },
+          //   })
+          // );
+          // dispatch(
+          //   setContactValueFieldDisabled({
+          //     address: ipAddress,
+          //     disabled: false,
+          //   })
+          // );
+          dispatch(
+            addNotification({
+              type: "success",
+              message:
+                "Сессия завершена и помечена как 'Недозвонился'. Демонстрация закончена",
+            })
           );
           dispatch(
-            setContactValueFieldDisabled({
+            setCommitSessionButtonLoading({
               address: ipAddress,
-              disabled: false,
-            }),
+              loading: false,
+            })
           );
         },
         errorAction: () => {
-          recordingService?.socket?.send(
-            JSON.stringify({
-              code: RecordingRequestCodes.END_RECORDING,
-              settings: { resultId: CallResultConstant.CALL_ERROR },
-            }),
+          // recordingService?.socket?.send(
+          //   JSON.stringify({
+          //     code: RecordingRequestCodes.END_RECORDING,
+          //     settings: { resultId: CallResultConstant.CALL_ERROR },
+          //   })
+          // );
+          // dispatch(
+          //   setContactValueFieldDisabled({
+          //     address: ipAddress,
+          //     disabled: false,
+          //   })
+          // );
+          dispatch(
+            addNotification({
+              type: "success",
+              message:
+                "Сессия завершена и помечена как 'Ошибочный'. Демонстрация закончена",
+            })
           );
           dispatch(
-            setContactValueFieldDisabled({
+            setCommitSessionButtonLoading({
               address: ipAddress,
-              disabled: false,
-            }),
+              loading: false,
+            })
           );
         },
-      }),
+      })
     );
   }, [recordingService]);
 
@@ -150,7 +239,7 @@ export const useDeviceButtonsHandlers = (ipAddress: string) => {
         address: ipAddress,
         booleanResult: !audioStreamingService?.isProcessing,
         closeAll: true,
-      }),
+      })
     );
   }, [audioStreamingService, ipAddress]);
 
@@ -176,90 +265,202 @@ export const useDeviceButtonsHandlers = (ipAddress: string) => {
       setIsMicRecordingProcessing({
         address: ipAddress,
         booleanResult: !speechReceivingService?.isProcessing,
-      }),
+      })
     );
   }, [speechReceivingService, ipAddress]);
 
-  const reloadContactButtonClicked = React.useCallback(() => {
-    if (uiControllingService) {
-      uiControllingService.socket?.send(
-        JSON.stringify({
-          actionCode: UIControllingRequestActionCodes.FIND_RELATIVE,
-          contactTypeId: recordingService?.contact?.contactTypeId,
-          settings: {
-            login: recordingService?.contact?.contactValue,
-          },
-        }),
+  const reloadContactButtonClicked = React.useCallback(async () => {
+    // if (uiControllingService) {
+    //   uiControllingService.socket?.send(
+    //     JSON.stringify({
+    //       actionCode: UIControllingRequestActionCodes.FIND_RELATIVE,
+    //       contactTypeId: recordingService?.contact?.contactTypeId,
+    //       settings: {
+    //         login: recordingService?.contact?.contactValue,
+    //       },
+    //     })
+    //   );
+    dispatch(
+      setCallActionButtonsDisabled({
+        address: ipAddress,
+        disabled: true,
+      })
+    );
+    dispatch(
+      setReloadContactButtonDisabled({
+        address: ipAddress,
+        disabled: true,
+      })
+    );
+    dispatch(
+      setContactValueFieldDisabled({
+        address: ipAddress,
+        disabled: true,
+      })
+    );
+    await sleep(2000);
+    const rand = Math.random();
+    if (rand > 0.3) {
+      dispatch(
+        addNotification({
+          type: "success",
+          message: "Набор контакта осуществлен. Демонстрация закончена",
+        })
       );
       dispatch(
         setCallActionButtonsDisabled({
           address: ipAddress,
-          disabled: true,
-        }),
+          disabled: false,
+        })
       );
       dispatch(
-        setReloadContactButtonDisabled({
-          address: ipAddress,
-          disabled: true,
-        }),
+        setCancelCallButtonDisabled({ address: ipAddress, disabled: true })
       );
+    } else {
       dispatch(
-        setContactValueFieldDisabled({
-          address: ipAddress,
-          disabled: true,
-        }),
+        addNotification({
+          type: "error",
+          message: "Ошибка в процессе набора контакта. Демонстрация закончена",
+        })
       );
     }
+    dispatch(
+      setReloadContactButtonDisabled({
+        address: ipAddress,
+        disabled: false,
+      })
+    );
+    dispatch(
+      setContactValueFieldDisabled({
+        address: ipAddress,
+        disabled: false,
+      })
+    );
   }, [uiControllingService, ipAddress, recordingService]);
 
-  const doCallButtonClicked = React.useCallback(() => {
+  const doCallButtonClicked = React.useCallback(async () => {
     if (uiControllingService) {
       dispatch(
         setContactValueFieldDisabled({
           address: ipAddress,
           disabled: true,
-        }),
+        })
       );
       dispatch(setDoCallButtonLoading({ address: ipAddress, loading: true }));
       dispatch(
         setReloadContactButtonDisabled({
           address: ipAddress,
           disabled: true,
-        }),
+        })
       );
       dispatch(
         setCommitSessionButtonDisabled({
           address: ipAddress,
           disabled: true,
-        }),
+        })
       );
-      uiControllingService.socket?.send(
-        JSON.stringify({
-          actionCode: UIControllingRequestActionCodes.DO_VIDEO_CALL,
-          contactTypeId: recordingService?.contact?.contactTypeId,
-          callId: recordingService?.callId,
-          contactId: recordingService?.contact?.id,
-          settings: {
-            login: recordingService?.contact?.contactValue,
-          },
-        }),
+      await sleep(2000);
+      const rand = Math.random();
+      if (rand > 0.3) {
+        dispatch(
+          addNotification({
+            type: "success",
+            message: "Вызов осуществлен. Демонстрация закончена",
+          })
+        );
+        dispatch(
+          setDoCallButtonDisabled({ address: ipAddress, disabled: true })
+        );
+        dispatch(
+          setCancelCallButtonDisabled({ address: ipAddress, disabled: false })
+        );
+      } else {
+        dispatch(
+          addNotification({
+            type: "error",
+            message: "Ошибка в процессе вызова. Демонстрация закончена",
+          })
+        );
+      }
+      dispatch(
+        setContactValueFieldDisabled({
+          address: ipAddress,
+          disabled: false,
+        })
       );
+      dispatch(setDoCallButtonLoading({ address: ipAddress, loading: false }));
+      dispatch(
+        setReloadContactButtonDisabled({
+          address: ipAddress,
+          disabled: false,
+        })
+      );
+      dispatch(
+        setCommitSessionButtonDisabled({
+          address: ipAddress,
+          disabled: false,
+        })
+      );
+      // uiControllingService.socket?.send(
+      //   JSON.stringify({
+      //     actionCode: UIControllingRequestActionCodes.DO_VIDEO_CALL,
+      //     contactTypeId: recordingService?.contact?.contactTypeId,
+      //     callId: recordingService?.callId,
+      //     contactId: recordingService?.contact?.id,
+      //     settings: {
+      //       login: recordingService?.contact?.contactValue,
+      //     },
+      //   })
+      // );
     }
   }, [uiControllingService, recordingService]);
 
-  const cancelCallButtonClicked = React.useCallback(() => {
+  const cancelCallButtonClicked = React.useCallback(async () => {
     dispatch(setCancelCallButtonLoading({ address: ipAddress, loading: true }));
-    if (uiControllingService) {
-      uiControllingService.socket?.send(
-        JSON.stringify({
-          actionCode: UIControllingRequestActionCodes.DECLINE_CALL,
-          contactTypeId: recordingService?.contact?.contactTypeId,
-          settings: {
-            login: recordingService?.contact?.contactValue,
-          },
-        }),
+    // if (uiControllingService) {
+    //   uiControllingService.socket?.send(
+    //     JSON.stringify({
+    //       actionCode: UIControllingRequestActionCodes.DECLINE_CALL,
+    //       contactTypeId: recordingService?.contact?.contactTypeId,
+    //       settings: {
+    //         login: recordingService?.contact?.contactValue,
+    //       },
+    //     })
+    //   );
+    // }
+    dispatch(
+      setCancelCallButtonDisabled({ address: ipAddress, disabled: true })
+    );
+    await sleep(1500);
+    const rand = Math.random();
+    if (rand > 0.3) {
+      dispatch(
+        addNotification({
+          type: "success",
+          message: "Вызов отменен. Демонстрация закончена",
+        })
+      );
+      dispatch(
+        setDoCallButtonDisabled({ address: ipAddress, disabled: false })
+      );
+      dispatch(
+        setCancelCallButtonDisabled({ address: ipAddress, disabled: true })
+      );
+    } else {
+      dispatch(
+        addNotification({
+          type: "error",
+          message:
+            "Ошибка в процессе отмены вызова. Попробуйте еще раз. Демонстрация закончена",
+        })
+      );
+      dispatch(
+        setCancelCallButtonDisabled({ address: ipAddress, disabled: false })
       );
     }
+    dispatch(
+      setCancelCallButtonLoading({ address: ipAddress, loading: false })
+    );
   }, [uiControllingService, recordingService]);
 
   return {

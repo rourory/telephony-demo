@@ -36,7 +36,7 @@ export async function fetchAllQuery<T extends Entity | AuditionEntity>(
     })
     .catch(async (err: AxiosError) => {
       const errorData = (err.response?.data as ErrorWithMessage) || undefined;
-      throw new Error(`${err.message} (${errorData?.messages})`);
+      throw new Error(convertMessagesArrayToString(errorData));
     }) as Promise<DataResponce<T>>;
 }
 

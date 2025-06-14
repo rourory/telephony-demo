@@ -1,10 +1,11 @@
-import { createAsyncThunk } from '@reduxjs/toolkit';
+import { createAsyncThunk } from "@reduxjs/toolkit";
 
-import { setPersonDataFieldLoading } from '../devices-slice';
-import { resolvePersonDataThunkPredicates } from '../resolve-person-data-thunk-predicates';
-import { CONVICTED } from '../../../../api/end-points';
-import { fetchAllQuery } from '../../../../api/queries';
-import { plusMinutes } from '../../../../utils/datetimeutils';
+import { setPersonDataFieldLoading } from "../devices-slice";
+import { resolvePersonDataThunkPredicates } from "../resolve-person-data-thunk-predicates";
+import { CONVICTED } from "../../../../api/end-points";
+import { fetchAllQuery } from "../../../../api/queries";
+import { plusMinutes } from "../../../../utils/datetimeutils";
+import { addNotification } from "../../notify-slice/notify-slice";
 
 export const loadPersonDataThunk = createAsyncThunk<
   { ipAddress: string; data: Array<PersonEntity>; lastLoaded: Date },
@@ -17,14 +18,12 @@ export const loadPersonDataThunk = createAsyncThunk<
     lastLoaded?: Date;
     currentData: Array<PersonEntity>;
   }
->('devices/loadPersonDataThunk', async (args, thunkApi) => {
+>("devices/loadPersonDataThunk", async (args, thunkApi) => {
   thunkApi.dispatch(
-    setPersonDataFieldLoading({ ipAddress: args.ipAddress, loading: true }),
+    setPersonDataFieldLoading({ ipAddress: args.ipAddress, loading: true })
   );
   let personData: Array<PersonEntity> = [];
   let lastLoaded = args.lastLoaded;
-
-
 
   if (!lastLoaded) {
     lastLoaded = new Date();
@@ -34,13 +33,21 @@ export const loadPersonDataThunk = createAsyncThunk<
       resolvePersonDataThunkPredicates(
         args.squadNumber,
         args.onlyIsNotUnderControl,
-        args.archived,
-      ),
+        args.archived
+      )
     )
       .then((res) => {
         personData = res.data;
       })
-      .catch((err) => thunkApi.rejectWithValue(err));
+      .catch((err) => {
+        thunkApi.dispatch(
+          addNotification({
+            type: "warning",
+            message: err,
+          })
+        );
+        return thunkApi.rejectWithValue(err);
+      });
   } else if (new Date() >= plusMinutes(lastLoaded, 1)) {
     lastLoaded = new Date();
     await fetchAllQuery<PersonEntity>(
@@ -49,8 +56,8 @@ export const loadPersonDataThunk = createAsyncThunk<
       resolvePersonDataThunkPredicates(
         args.squadNumber,
         args.onlyIsNotUnderControl,
-        args.archived,
-      ),
+        args.archived
+      )
     )
       .then((res) => {
         personData = res.data;

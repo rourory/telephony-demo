@@ -17,6 +17,7 @@ type DevicesSliceType = {
   contactTypeValueOptions: Array<ContactTypeEntity>;
   relationTypeValueOptions: Array<RelationTypeEntity>;
   markedWords?: Array<MarkedWordEntity>;
+  permittedDurations: Array<PermittedCallDurationEntity>;
 };
 
 type ServiceSocketConnection = {

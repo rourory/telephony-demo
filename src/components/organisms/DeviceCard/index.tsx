@@ -1,40 +1,41 @@
-import React from 'react';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardActions from '@mui/material/CardActions';
-import IconButton from '@mui/material/IconButton';
-import PersonAutocompleteField from '../../molecules/PersonAutocompleteField/Index';
-import CallIcon from '@mui/icons-material/Call';
-import CallEndIcon from '@mui/icons-material/CallEnd';
-import { Box, ButtonGroup, Menu, Tooltip } from '@mui/material';
-import LoadingButton from '@mui/lab/LoadingButton/LoadingButton';
-import CommitIcon from '@mui/icons-material/Commit';
-import HeadsetIcon from '@mui/icons-material/Headset';
-import MicIcon from '@mui/icons-material/Mic';
-import PersonalVideoIcon from '@mui/icons-material/PersonalVideo';
-import StyledParagragp from '../../atoms/StyledParagraph/Index';
-import { useDispatch, useSelector } from 'react-redux';
-import { vncVideoShowSelector } from '../../../redux/slices/vnc-video-show-slice/vnc-video-show-slice';
-import { AppDispatch, RootState } from '../../../redux/store';
+import React from "react";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardActions from "@mui/material/CardActions";
+import IconButton from "@mui/material/IconButton";
+import PersonAutocompleteField from "../../molecules/PersonAutocompleteField/Index";
+import CallIcon from "@mui/icons-material/Call";
+import CallEndIcon from "@mui/icons-material/CallEnd";
+import { Box, ButtonGroup, Menu, Tooltip } from "@mui/material";
+import LoadingButton from "@mui/lab/LoadingButton/LoadingButton";
+import CommitIcon from "@mui/icons-material/Commit";
+import HeadsetIcon from "@mui/icons-material/Headset";
+import MicIcon from "@mui/icons-material/Mic";
+import PersonalVideoIcon from "@mui/icons-material/PersonalVideo";
+import StyledParagragp from "../../atoms/StyledParagraph/Index";
+import { useDispatch, useSelector } from "react-redux";
+import { vncVideoShowSelector } from "../../../redux/slices/vnc-video-show-slice/vnc-video-show-slice";
+import { AppDispatch, RootState } from "../../../redux/store";
 import {
   setIsAlive,
   deviceAvailableExtraCallPermissionSelector,
-} from '../../../redux/slices/devices-slice/devices-slice';
-import startPinging from './start-pinging';
-import { AppCardHeader } from './subcomponents/CardHeader';
-import ContactAutocompleteField from '../../molecules/ContactAutocompleteField';
-import RelativeAutocompleteField from '../../molecules/RelativeAutocompleteField';
-import ContactsIcon from '@mui/icons-material/Contacts';
-import DialpadIcon from '@mui/icons-material/Dialpad';
-import { useDeviceButtonsHandlers } from '../../../hooks/useDeviceButtonsHandlers';
-import { useEstablishConeection } from '../../../hooks/useEstablishConnection';
-import { useMenuPhotoHolder } from '../../../hooks/useMenuPhotoHolder';
-import { useRemoteServices } from '../../../hooks/useRemoteServices';
-import { useSpeechRecognition } from '../../../hooks/useSpeechRecognition';
-import { serverSettingsSelector } from '../../../redux/slices/server-settings-slice/server-settings-slice';
-import DeviceSpeechRecognizerStateBox from '../../molecules/DeviceSpeechRecognizerStateBox';
-import { PhotoHolder } from '../../molecules/PhotoHolder';
-import UltraLightLoadingIndicator from '../../molecules/UltraLightLoadingIndicator';
+  permittedDurationsSelector,
+} from "../../../redux/slices/devices-slice/devices-slice";
+import startPinging from "./start-pinging";
+import { AppCardHeader } from "./subcomponents/CardHeader";
+import ContactAutocompleteField from "../../molecules/ContactAutocompleteField";
+import RelativeAutocompleteField from "../../molecules/RelativeAutocompleteField";
+import ContactsIcon from "@mui/icons-material/Contacts";
+import DialpadIcon from "@mui/icons-material/Dialpad";
+import { useDeviceButtonsHandlers } from "../../../hooks/useDeviceButtonsHandlers";
+import { useEstablishConeection } from "../../../hooks/useEstablishConnection";
+import { useMenuPhotoHolder } from "../../../hooks/useMenuPhotoHolder";
+import { useRemoteServices } from "../../../hooks/useRemoteServices";
+import { useSpeechRecognition } from "../../../hooks/useSpeechRecognition";
+import { serverSettingsSelector } from "../../../redux/slices/server-settings-slice/server-settings-slice";
+import DeviceSpeechRecognizerStateBox from "../../molecules/DeviceSpeechRecognizerStateBox";
+import { PhotoHolder } from "../../molecules/PhotoHolder";
+import UltraLightLoadingIndicator from "../../molecules/UltraLightLoadingIndicator";
 
 const DeviceCard: React.FC<{
   device: DeviceState;
@@ -43,9 +44,10 @@ const DeviceCard: React.FC<{
   const dispatch = useDispatch<AppDispatch>();
 
   const { standardCallDuration } = useSelector(serverSettingsSelector);
+  const permittedDurations = useSelector(permittedDurationsSelector);
 
   const availableExtraCallPermissions = useSelector((state: RootState) =>
-    deviceAvailableExtraCallPermissionSelector(state, device.ipAddress),
+    deviceAvailableExtraCallPermissionSelector(state, device.ipAddress)
   );
 
   const {
@@ -67,14 +69,14 @@ const DeviceCard: React.FC<{
 
   React.useEffect(() => {
     const stopPinging = startPinging(device.ipAddress, 8000, (alive: boolean) =>
-      dispatch(setIsAlive({ address: device.ipAddress, booleanResult: alive })),
+      dispatch(setIsAlive({ address: device.ipAddress, booleanResult: alive }))
     );
     return () => {
       stopPinging();
     };
   }, []);
 
-  useEstablishConeection(device, markedWords);
+  // useEstablishConeection(device, markedWords);
   useSpeechRecognition(device.ipAddress, recordingService, recognitionService);
 
   const {
@@ -90,15 +92,15 @@ const DeviceCard: React.FC<{
   } = useDeviceButtonsHandlers(device.ipAddress);
 
   return (
-    <Card sx={{ width: '100%', height: '335px' }}>
+    <Card sx={{ width: "100%", height: "335px" }}>
       <AppCardHeader device={device} />
       {device.isTurnedOn && (
         <>
-          <CardContent sx={{ padding: '5px 15px', height: '200px' }}>
+          <CardContent sx={{ padding: "5px 15px", height: "200px" }}>
             <PersonAutocompleteField deviceAddress={device.ipAddress} />
             {recordingService?.isProcessing && (
               <Box className="additional-controls">
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
                   <RelativeAutocompleteField deviceAddress={device.ipAddress} />
                   {/* Show relative image button */}
                   <Tooltip title="Посмотреть фото" followCursor>
@@ -106,7 +108,7 @@ const DeviceCard: React.FC<{
                       <IconButton
                         id={`show-photo-button${device.ipAddress}`}
                         aria-label="show-photo-button"
-                        sx={{ marginBottom: ' 10px', marginLeft: '10px' }}
+                        sx={{ marginBottom: " 10px", marginLeft: "10px" }}
                         onClick={handleMenuPhotoHolderClick}
                         disabled={recordingService?.relative == null}
                       >
@@ -123,8 +125,8 @@ const DeviceCard: React.FC<{
                     {menuPhotoHolderOpen && (
                       <PhotoHolder
                         id={recordingService?.relative?.id || 0}
-                        entity={'RELATIVE'}
-                        margin={'0'}
+                        entity={"RELATIVE"}
+                        margin={"0"}
                         width={450}
                         height={562}
                         showControls={false}
@@ -132,7 +134,7 @@ const DeviceCard: React.FC<{
                     )}
                   </Menu>
                 </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
                   <ContactAutocompleteField
                     deviceAddress={device.ipAddress}
                     disabled={device.contactValueAutocompleteField.disabled}
@@ -141,7 +143,7 @@ const DeviceCard: React.FC<{
                   <Tooltip title="Ввести контакт" followCursor>
                     <span>
                       <IconButton
-                        sx={{ marginBottom: ' 10px', marginLeft: '10px' }}
+                        sx={{ marginBottom: " 10px", marginLeft: "10px" }}
                         onClick={reloadContactButtonClicked}
                         disabled={
                           recordingService.contact == null ||
@@ -154,7 +156,7 @@ const DeviceCard: React.FC<{
                     </span>
                   </Tooltip>
                 </Box>
-                <Box sx={{ display: 'flex', justifyContent: 'space-around' }}>
+                <Box sx={{ display: "flex", justifyContent: "space-around" }}>
                   {/* Do call button */}
                   <LoadingButton
                     loadingIndicator={<UltraLightLoadingIndicator />}
@@ -163,14 +165,14 @@ const DeviceCard: React.FC<{
                       device.doCallButtonDisabled
                     }
                     loading={device.doCallButtonLoading}
-                    variant={'contained'}
+                    variant={"contained"}
                     color="success"
                     startIcon={<CallIcon />}
                     size="small"
                     onClick={doCallButtonClicked}
                   >
                     <StyledParagragp
-                      text={'Звонок'}
+                      text={"Звонок"}
                       fontSize="14px"
                       fontWeight={600}
                     />
@@ -190,7 +192,7 @@ const DeviceCard: React.FC<{
                     onClick={cancelCallButtonClicked}
                   >
                     <StyledParagragp
-                      text={'Сброс'}
+                      text={"Сброс"}
                       fontSize="14px"
                       fontWeight={600}
                     />
@@ -207,7 +209,7 @@ const DeviceCard: React.FC<{
                     onClick={commitCallButtonClicked}
                   >
                     <StyledParagragp
-                      text={'Завершить сеанс'}
+                      text={"Завершить сеанс"}
                       fontSize="14px"
                       fontWeight={600}
                     />
@@ -218,11 +220,11 @@ const DeviceCard: React.FC<{
             {!recordingService?.isProcessing && (
               <Box
                 sx={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  height: '130px',
-                  flexDirection: 'column',
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "130px",
+                  flexDirection: "column",
                 }}
               >
                 {/* Begin session button */}
@@ -240,7 +242,12 @@ const DeviceCard: React.FC<{
                 >
                   <StyledParagragp
                     text={`Начать сеанс (до ${
-                      standardCallDuration?.duration || '?'
+                      permittedDurations.find((d) => {
+                        if (!d.id) return false;
+                        const duration =
+                          standardCallDuration as unknown as number;
+                        return d.id === duration;
+                      })?.duration || "?"
                     } мин.)`}
                     fontSize="14px"
                     fontWeight={600}
@@ -251,9 +258,9 @@ const DeviceCard: React.FC<{
                     <LoadingButton
                       loadingIndicator={<UltraLightLoadingIndicator />}
                       key={`${device.ipAddress}.extraPermissionButton.${extraPermission.id}`}
-                      variant={'outlined'}
-                      color={'success'}
-                      sx={{ marginTop: '5px' }}
+                      variant={"outlined"}
+                      color={"success"}
+                      sx={{ marginTop: "5px" }}
                       size="large"
                       disabled={recordingService?.personData == null}
                       loading={
@@ -265,7 +272,14 @@ const DeviceCard: React.FC<{
                       }
                     >
                       <StyledParagragp
-                        text={`Начать сеанс (до ${extraPermission.duration.duration} мин.)`}
+                        text={`Начать сеанс (до ${
+                          permittedDurations.find((d) => {
+                            if (!d.id) return false;
+                            const duration =
+                              extraPermission.duration as unknown as number;
+                            return d.id === duration;
+                          })?.duration || "?"
+                        } мин.)`}
                         fontSize="14px"
                         fontWeight={600}
                       />
@@ -275,7 +289,7 @@ const DeviceCard: React.FC<{
               </Box>
             )}
           </CardContent>
-          <CardActions sx={{ display: 'flex' }}>
+          <CardActions sx={{ display: "flex" }}>
             <DeviceSpeechRecognizerStateBox
               audioRecognizerConnectedState={
                 device.audioRetranslationSocketConnected
@@ -287,23 +301,21 @@ const DeviceCard: React.FC<{
             />
             <ButtonGroup
               variant="outlined"
-              sx={{ margin: '0 auto', justifyContent: 'center', width: '100%' }}
+              sx={{ margin: "0 auto", justifyContent: "center", width: "100%" }}
             >
               {/* Audio streaming button */}
               <LoadingButton
                 loadingIndicator={<UltraLightLoadingIndicator />}
                 loading={
                   !audioStreamingService?.isAvailable ||
-                  !speechReceivingService?.isAvailable ||
-                  audioStreamingService.socket?.readyState != 1 ||
-                  speechReceivingService.socket?.readyState != 1
+                  !speechReceivingService?.isAvailable 
                 }
                 disabled={
                   !audioStreamingService?.isAvailable &&
                   !speechReceivingService?.isAvailable
                 }
                 variant={
-                  audioStreamingService?.isProcessing ? 'contained' : 'outlined'
+                  audioStreamingService?.isProcessing ? "contained" : "outlined"
                 }
                 onClick={audioStreamingButtonClicked}
               >
@@ -319,8 +331,8 @@ const DeviceCard: React.FC<{
                 }
                 variant={
                   speechReceivingService?.isProcessing
-                    ? 'contained'
-                    : 'outlined'
+                    ? "contained"
+                    : "outlined"
                 }
                 onClick={micButtonClicked}
               >
@@ -332,8 +344,8 @@ const DeviceCard: React.FC<{
                 onClick={videoButtonClicked}
                 variant={
                   actualVncServiceUrl == device.ipAddress && openVncVideoFrame
-                    ? 'contained'
-                    : 'outlined'
+                    ? "contained"
+                    : "outlined"
                 }
               >
                 <PersonalVideoIcon />
@@ -346,11 +358,11 @@ const DeviceCard: React.FC<{
         // <ContentLoader height={210} />
         <Box
           sx={{
-            height: '70%',
-            width: '100%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
+            height: "70%",
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
           }}
         >
           <UltraLightLoadingIndicator />

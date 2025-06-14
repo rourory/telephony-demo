@@ -12,6 +12,7 @@ import { loadContactTypeValuesThunk } from "../../redux/slices/devices-slice/sub
 import { loadMarkedWordsThunk } from "../../redux/slices/devices-slice/subthunks/load-marked-words";
 import { loadRelationTypeValuesThunk } from "../../redux/slices/devices-slice/subthunks/load-relation-type-values-thunk";
 import { CssBaseline } from "@mui/material";
+import { loadPermittedDurationsThunk } from "../../redux/slices/devices-slice/subthunks/load-permitted-durations-thunk";
 const MainLayout: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const backendSettings = useSelector(appSettingsStateSelector);
@@ -20,6 +21,7 @@ const MainLayout: React.FC = () => {
     dispatch(loadContactTypeValuesThunk(backendSettings));
     dispatch(loadRelationTypeValuesThunk(backendSettings));
     dispatch(loadMarkedWordsThunk(backendSettings));
+    dispatch(loadPermittedDurationsThunk(backendSettings));
   }, [backendSettings]);
 
   return (

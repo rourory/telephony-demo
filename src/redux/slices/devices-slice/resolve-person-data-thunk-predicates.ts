@@ -1,20 +1,20 @@
 export const resolvePersonDataThunkPredicates = (
   squadNumber: number | null,
   onlyIsNotUnderControl: boolean,
-  archived: boolean | null,
+  archived: boolean | null
 ) => {
   const predicates = [];
-  let resolvedPredicate = '';
+  let resolvedPredicate = "";
 
   if (archived != null) {
-    predicates.push(['archived', '=', archived]);
+    predicates.push(['"archived"', '"="', archived]);
   }
 
   if (squadNumber != null) {
-    predicates.push(['squadNumber', '=', squadNumber]);
+    predicates.push(['"squadNumber"', '"="', squadNumber]);
   }
   if (onlyIsNotUnderControl) {
-    predicates.push(['isUnderControl', '=', !onlyIsNotUnderControl]);
+    predicates.push(['"isUnderControl"', '"="', !onlyIsNotUnderControl]);
   }
 
   if (predicates.length > 0) {

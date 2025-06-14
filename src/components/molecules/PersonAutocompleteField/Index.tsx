@@ -1,11 +1,11 @@
-import React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
+import React from "react";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
 import Autocomplete, {
   AutocompleteRenderInputParams,
-} from '@mui/material/Autocomplete';
-import StyledParagragp from '../../atoms/StyledParagraph/Index';
-import { useDispatch, useSelector } from 'react-redux';
+} from "@mui/material/Autocomplete";
+import StyledParagragp from "../../atoms/StyledParagraph/Index";
+import { useDispatch, useSelector } from "react-redux";
 import {
   devicePersonDataAutocompleteFieldStateSelector,
   deviceRecordingServiceSelector,
@@ -13,18 +13,18 @@ import {
   personDataOptionsSelector,
   setPersonData,
   setPersonDataFieldOpen,
-} from '../../../redux/slices/devices-slice/devices-slice';
-import { AppDispatch, RootState } from '../../../redux/store';
+} from "../../../redux/slices/devices-slice/devices-slice";
+import { AppDispatch, RootState } from "../../../redux/store";
 import {
   userPermissions,
   userSelector,
-} from '../../../redux/slices/user-slice/user-slice';
-import { plusHours } from '../../../utils/datetimeutils';
+} from "../../../redux/slices/user-slice/user-slice";
+import { plusHours } from "../../../utils/datetimeutils";
 
-import { VariableSizeList, ListChildComponentProps } from 'react-window';
-import { appSettingsStateSelector } from '../../../redux/slices/app-settings-slice/app-settings-slice';
-import { loadPersonDataThunk } from '../../../redux/slices/devices-slice/subthunks/load-person-data-thunk';
-import { loadAvailableExtraCallPermissionsThunk } from '../../../redux/slices/devices-slice/subthunks/load-available-extra-call-permissions-thunk';
+import { VariableSizeList, ListChildComponentProps } from "react-window";
+import { appSettingsStateSelector } from "../../../redux/slices/app-settings-slice/app-settings-slice";
+import { loadPersonDataThunk } from "../../../redux/slices/devices-slice/subthunks/load-person-data-thunk";
+import { loadAvailableExtraCallPermissionsThunk } from "../../../redux/slices/devices-slice/subthunks/load-available-extra-call-permissions-thunk";
 
 const LISTBOX_PADDING = 8;
 
@@ -45,7 +45,7 @@ const OuterElementType = React.forwardRef<HTMLDivElement>(
   function OuterElementType(props, ref) {
     const outerProps = React.useContext(OuterElementContext);
     return <div ref={ref} {...props} {...outerProps} />;
-  },
+  }
 );
 
 function useResetCache(data: any) {
@@ -76,7 +76,7 @@ const ListboxComponent = React.forwardRef<
           itemData={itemData}
           height={height}
           width="100%"
-          innerElementType={'ul'}
+          innerElementType={"ul"}
           outerElementType={OuterElementType}
           itemSize={() => itemSize}
           itemCount={itemData.length}
@@ -111,7 +111,7 @@ const PersonAutocompleteField: React.FC<AutocompleteFieldType> = ({
         new Date().getTime() <=
         plusHours(
           new Date(temporaryGivingCallsToAnotherSquad),
-          temporaryGivingCallsToAnotherSquadHours,
+          temporaryGivingCallsToAnotherSquadHours
         ).getTime()
       );
     }
@@ -122,10 +122,10 @@ const PersonAutocompleteField: React.FC<AutocompleteFieldType> = ({
   ]);
 
   const fieldState = useSelector((state: RootState) =>
-    devicePersonDataAutocompleteFieldStateSelector(state, deviceAddress),
+    devicePersonDataAutocompleteFieldStateSelector(state, deviceAddress)
   );
   const recordingService = useSelector((state: RootState) =>
-    deviceRecordingServiceSelector(state, deviceAddress),
+    deviceRecordingServiceSelector(state, deviceAddress)
   );
   const optionsData = useSelector(personDataOptionsSelector);
   const lastLoadedAt = useSelector(personDataLoadedAtSelector);
@@ -144,9 +144,10 @@ const PersonAutocompleteField: React.FC<AutocompleteFieldType> = ({
         backendSettings: backendSettings,
         currentData: optionsData,
         lastLoaded: lastLoadedAt,
-      }),
+      })
     );
   }, [
+    backendSettings,
     deviceAddress,
     canGiveCallsToAnotherSquad,
     isTemporaryPermitted,
@@ -162,34 +163,34 @@ const PersonAutocompleteField: React.FC<AutocompleteFieldType> = ({
 
   const isOptionEqualToValue = React.useCallback(
     (option: PersonEntity, value: PersonEntity) => option.id === value.id,
-    [],
+    []
   );
 
   const onChange = React.useCallback(
     (
       _: React.SyntheticEvent<Element, Event>,
-      newValue: PersonEntity | null,
+      newValue: PersonEntity | null
     ) => {
       dispatch(
-        setPersonData({ ipAddress: deviceAddress, personData: newValue }),
+        setPersonData({ ipAddress: deviceAddress, personData: newValue })
       );
       dispatch(
         loadAvailableExtraCallPermissionsThunk({
           ipAddress: deviceAddress,
           convictedId: newValue?.id || 0,
           backendSettings: backendSettings,
-        }),
+        })
       );
     },
-    [deviceAddress],
+    [deviceAddress]
   );
 
   const getOptionLabel = React.useCallback(
     (option: PersonEntity) =>
       `${option.secondName} ${option.firstName} ${
-        option.middleName != null ? option.middleName : ''
+        option.middleName != null ? option.middleName : ""
       } (${option.squadNumber})`,
-    [],
+    []
   );
 
   const renderOption = React.useCallback(
@@ -202,13 +203,13 @@ const PersonAutocompleteField: React.FC<AutocompleteFieldType> = ({
       >
         <StyledParagragp
           text={`${option.secondName} ${option.firstName} ${
-            option.middleName ?? ''
+            option.middleName ?? ""
           }, ${option.squadNumber} отр.`}
           fontWeight={600}
         />
       </Box>
     ),
-    [],
+    []
   );
 
   const renderInput = React.useCallback(
@@ -219,7 +220,7 @@ const PersonAutocompleteField: React.FC<AutocompleteFieldType> = ({
           {...params}
           id={`${params.id}personAutocompleteRenderInputParams`}
           label={
-            <StyledParagragp text={'Фамилия, имя, отчество'} fontWeight={600} />
+            <StyledParagragp text={"Фамилия, имя, отчество"} fontWeight={600} />
           }
           InputProps={{
             ...params.InputProps,
@@ -230,12 +231,12 @@ const PersonAutocompleteField: React.FC<AutocompleteFieldType> = ({
         />
       );
     },
-    [fieldState],
+    [fieldState]
   );
 
   return (
     <Autocomplete
-      sx={{ width: '100%', marginBottom: '10px' }}
+      sx={{ width: "100%", marginBottom: "10px" }}
       open={fieldState?.open}
       disabled={
         recordingService?.isProcessing || !recordingService?.isAvailable

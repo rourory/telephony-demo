@@ -12,7 +12,7 @@ export const loadAvailableExtraCallPermissionsThunk = createAsyncThunk<
   let error: any;
   await fetchAllQuery<ExtraCallPermissionEntity>(
     args.backendSettings,
-    `${EXTRA_CALL_PERMISSIONS}/${args.convictedId}/available`,
+    `${EXTRA_CALL_PERMISSIONS}?convictedId=${args.convictedId}`,
   )
     .then((res) => {
       extraCallPermissions.push(...res.data);
