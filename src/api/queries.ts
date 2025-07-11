@@ -69,7 +69,7 @@ export async function fetchOneQuery<T extends Entity | AuditionEntity>(
       return res.data;
     })
     .catch((err: AxiosError) => {
-      setTokenToLocalStorage(err.response?.headers.authorization || "");
+      setTokenToLocalStorage(err.response?.headers.authorization || getTokenFromLocalStorage());
       const errorData = (err.response?.data as ErrorWithMessage) || undefined;
       throw new Error(`${err.message} (${errorData?.messages})`);
     });
@@ -100,7 +100,7 @@ export async function deleteQuery(
         throw convertMessagesArrayToString(res.data as ErrorWithMessage);
     })
     .catch((err: AxiosError) => {
-      setTokenToLocalStorage(err.response?.headers.authorization || "");
+      setTokenToLocalStorage(err.response?.headers.authorization || getTokenFromLocalStorage());
       const errorData = (err.response?.data as ErrorWithMessage) || undefined;
       throw new Error(`${err.message} (${errorData?.messages})`);
     });
@@ -129,7 +129,7 @@ export async function insertQuery<T extends Entity | AuditionEntity>(
       else throw convertMessagesArrayToString(res.data as ErrorWithMessage);
     })
     .catch((err: AxiosError) => {
-      setTokenToLocalStorage(err.response?.headers.authorization || "");
+      setTokenToLocalStorage(err.response?.headers.authorization || getTokenFromLocalStorage());
       const errorData = (err.response?.data as ErrorWithMessage) || undefined;
       throw new Error(`${err.message} (${errorData?.messages})`);
     });
@@ -161,7 +161,7 @@ export async function updateQuery<T extends Entity | AuditionEntity>(
       }
     })
     .catch((err: AxiosError) => {
-      setTokenToLocalStorage(err.response?.headers.authorization || "");
+      setTokenToLocalStorage(err.response?.headers.authorization || getTokenFromLocalStorage());
       const errorData = (err.response?.data as ErrorWithMessage) || undefined;
       throw new Error(`${err.message} (${errorData?.messages})`);
     });
