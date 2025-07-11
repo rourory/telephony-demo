@@ -65,7 +65,7 @@ export async function fetchOneQuery<T extends Entity | AuditionEntity>(
       }
     )
     .then((res) => {
-      setTokenToLocalStorage(res.headers.authorization || "");
+      setTokenToLocalStorage(res.headers.authorization || getTokenFromLocalStorage());
       return res.data;
     })
     .catch((err: AxiosError) => {
@@ -97,7 +97,7 @@ export async function deleteQuery(
       { headers: { Authorization: getTokenFromLocalStorage() } }
     )
     .then((res) => {
-      setTokenToLocalStorage(res.headers.authorization || "");
+      setTokenToLocalStorage(res.headers.authorization || getTokenFromLocalStorage());
       if (res.status !== 200)
         throw convertMessagesArrayToString(res.data as ErrorWithMessage);
     })
@@ -159,7 +159,7 @@ export async function updateQuery<T extends Entity | AuditionEntity>(
       }
     )
     .then((res) => {
-      setTokenToLocalStorage(res.headers.authorization || "");
+      setTokenToLocalStorage(res.headers.authorization || getTokenFromLocalStorage());
       if (res.status === 200 || res.status === 203) return res;
       else {
         const error = res.data as ErrorWithMessage;
