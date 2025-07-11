@@ -69,7 +69,9 @@ export async function fetchOneQuery<T extends Entity | AuditionEntity>(
       return res.data;
     })
     .catch((err: AxiosError) => {
-      setTokenToLocalStorage(err.response?.headers.authorization || getTokenFromLocalStorage());
+      setTokenToLocalStorage(
+        err.response?.headers.authorization || getTokenFromLocalStorage()
+      );
       const errorData = (err.response?.data as ErrorWithMessage) || undefined;
       throw new Error(`${err.message} (${errorData?.messages})`);
     });
@@ -100,7 +102,9 @@ export async function deleteQuery(
         throw convertMessagesArrayToString(res.data as ErrorWithMessage);
     })
     .catch((err: AxiosError) => {
-      setTokenToLocalStorage(err.response?.headers.authorization || getTokenFromLocalStorage());
+      setTokenToLocalStorage(
+        err.response?.headers.authorization || getTokenFromLocalStorage()
+      );
       const errorData = (err.response?.data as ErrorWithMessage) || undefined;
       throw new Error(`${err.message} (${errorData?.messages})`);
     });
@@ -129,7 +133,9 @@ export async function insertQuery<T extends Entity | AuditionEntity>(
       else throw convertMessagesArrayToString(res.data as ErrorWithMessage);
     })
     .catch((err: AxiosError) => {
-      setTokenToLocalStorage(err.response?.headers.authorization || getTokenFromLocalStorage());
+      setTokenToLocalStorage(
+        err.response?.headers.authorization || getTokenFromLocalStorage()
+      );
       const errorData = (err.response?.data as ErrorWithMessage) || undefined;
       throw new Error(`${err.message} (${errorData?.messages})`);
     });
@@ -161,7 +167,9 @@ export async function updateQuery<T extends Entity | AuditionEntity>(
       }
     })
     .catch((err: AxiosError) => {
-      setTokenToLocalStorage(err.response?.headers.authorization || getTokenFromLocalStorage());
+      setTokenToLocalStorage(
+        err.response?.headers.authorization || getTokenFromLocalStorage()
+      );
       const errorData = (err.response?.data as ErrorWithMessage) || undefined;
       throw new Error(`${err.message} (${errorData?.messages})`);
     });
@@ -219,7 +227,9 @@ export async function fetchImage(
       }
     )
     .then((res) => {
-      setTokenToLocalStorage(res.headers.authorization || "");
+      setTokenToLocalStorage(
+        res.headers.authorization || getTokenFromLocalStorage()
+      );
       if (res.status !== 200) {
         return undefined;
       }
@@ -254,7 +264,9 @@ export async function deleteImage(
       }
     )
     .then((res) => {
-      setTokenToLocalStorage(res.headers.authorization || "");
+      setTokenToLocalStorage(
+        res.headers.authorization || getTokenFromLocalStorage()
+      );
       return res.data;
     })
     .catch((err: Error) => {
@@ -283,7 +295,9 @@ export async function uploadImage(
       }
     )
     .then((res) => {
-      setTokenToLocalStorage(res.headers.authorization || "");
+      setTokenToLocalStorage(
+        res.headers.authorization || getTokenFromLocalStorage()
+      );
       if (res.status !== 200) {
         const error = JSON.parse(
           new TextDecoder("utf-8").decode(res.data as ArrayBuffer)
